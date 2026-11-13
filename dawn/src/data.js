@@ -30,6 +30,12 @@ export const IRC_2026 = {
   note: 'This is portfolio narrative, not an external competition record.',
 };
 
+export const PORTFOLIO_NOTE = {
+  title: 'Portfolio Field Note',
+  day01: 'The field is a guided way to read engineering interests, editorial work, evidence, and independent learning.',
+  note: 'Each marker is a portfolio interface, not a claim about an external organization or competition record.',
+};
+
 export const FACTORY_PROJECTS = [
   { name: 'METRON Vol. IX', blurb: 'A completed EIE department annual developed through editorial direction, HTML/CSS layout, and print-ready page design.' },
   { name: 'Navodhayam', blurb: 'A FISAT KEAM Helpdesk initiative that combines cutoff data with department-specific student guidance.' },
