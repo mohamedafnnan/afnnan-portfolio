@@ -1,0 +1,14 @@
+# Local archives and packaging outputs
+*.zip
+*.tar
+*.tar.gz
+
+# Local caches
+__pycache__/
+.DS_Store
+Thumbs.db
+
+# Editor and OS files
+.vscode/
+.idea/
+*.swp

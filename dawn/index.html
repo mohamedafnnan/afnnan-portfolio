@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="mars">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#ff7a1a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="DAWN Portfolio Field" />
+
+    <title>DAWN · Mohamed Afnnan’s Interactive Portfolio Field</title>
+    <meta name="description" content="DAWN is Mohamed Afnnan’s interactive portfolio field: explore engineering interests, publication design, evidence, and independent learning through a rich geological 3D environment." />
+    <meta property="og:title" content="DAWN · Mohamed Afnnan’s Portfolio Field" />
+    <meta property="og:description" content="Explore engineering, documentation, evidence, and learning through a rich interactive geological field." />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" type="image/png" href="/assets/dawn-rover-icon-192.png" />
+    <link rel="apple-touch-icon" href="/assets/dawn-rover-icon-192.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link href="/assets/fonts/fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/dawn/dawn.css" />
+
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "/dawn/vendor/three/three.module.js",
+        "three/addons/": "/dawn/vendor/three/addons/",
+        "rapier": "/dawn/vendor/rapier/rapier.es.js"
+      }
+    }
+    </script>
+    <script type="module" src="/dawn/src/main.js"></script>
+  </head>
+  <body>
+    <!-- LANDING / CLICK-TO-START -->
+    <div id="landing" class="landing" role="dialog" aria-labelledby="landing-title" aria-modal="true">
+      <div class="landing__grid" aria-hidden="true"></div>
+      <canvas id="loading-particles" class="loading-particles" aria-hidden="true"></canvas>
+      <div class="landing__inner">
+        <img class="landing__seal" src="/assets/external/4ff15f3800-logo.png" alt="" />
+        <p class="landing__tag">FIELD INTERFACE / DAWN—02 / AFNNAN</p>
+        <h1 id="landing-title">DAWN<span>Portfolio field interface</span></h1>
+        <p class="landing__intro">An interactive portfolio field for engineering, documentation, publication design, and independent learning. Explore the terrain, open the notes, and follow the work.</p>
+        <dl class="landing__facts">
+          <div><dt>Platform</dt><dd>DAWN / AF</dd></div>
+          <div><dt>Environment</dt><dd>Geological field</dd></div>
+          <div><dt>Mode</dt><dd>Explore · Read · Connect</dd></div>
+        </dl>
+        <a class="landing__portfolio" href="/">← Portfolio / Mohamed Afnnan</a>
+        <button id="rover-mode-toggle" class="rover-mode-toggle" type="button" aria-pressed="false" aria-label="Toggle rover model; applies when the field is loaded">
+          <span class="rover-mode-toggle__dot" aria-hidden="true"></span><span id="rover-mode-label">Procedural rover</span><small>toggle model</small>
+        </button>
+        <button id="landing-start" class="landing__start" type="button" disabled>
+          <span class="landing__start-icon" aria-hidden="true">►</span>
+          <span>ENTER FIELD</span>
+        </button>
+        <p class="landing__help"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · <kbd>Space</kbd> brake · <kbd>E</kbd> note · <kbd>M</kbd> index · <kbd>?</kbd> help</p>
+        <p class="landing__progress"><span id="landing-progress-label">Preparing surface uplink…</span></p>
+        <div class="landing__meter" aria-hidden="true"><i id="landing-meter"></i></div>
+      </div>
+    </div>
+
+    <!-- WebGL surface -->
+    <canvas id="stage" tabindex="0" role="application" aria-label="DAWN interactive portfolio field. Use W A S D to move, E to open a note, M to open the index, and ? for help."></canvas>
+
+    <!-- HUD host — populated by src/hud/* -->
+    <div id="ui-root" aria-live="polite"></div>
+
+    <!-- Live-status announcer for screen readers -->
+    <div id="announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Accessibility fallback for prefers-reduced-motion / ?a11y=1 -->
+    <main id="a11y-fallback" class="a11y-fallback" hidden></main>
+
+    <noscript>
+      <div class="noscript">
+        DAWN is a real-time 3D experience and requires JavaScript. Visit the <a href="/">main Mohamed Afnnan portfolio</a>.
+      </div>
+    </noscript>
+  </body>
+</html>
