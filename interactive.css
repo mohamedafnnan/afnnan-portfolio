@@ -39,3 +39,24 @@
 @keyframes rose-open{0%{transform:scale(.12) rotate(-35deg);opacity:0}65%{transform:scale(1.12) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
 @media(max-width:600px){.hello-grid{grid-template-columns:1fr}.shelf-book{flex-basis:105px;min-height:150px}}
 @media(prefers-reduced-motion:reduce){.rose-bloom{animation:none}.shelf-book{transition:none}.rose-reveal{transition:none}}
+
+/* On-load greeting, blooming rose and name signature */
+.opening-intro{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:#f4f1e8;color:#17231f;opacity:1;visibility:visible;transition:opacity .8s ease,visibility .8s ease}
+.opening-inner{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px}
+.opening-overline,.opening-surname{font:9px var(--mono);letter-spacing:.24em;color:#72766b}
+.opening-hello{height:clamp(66px,12vw,120px);display:grid;place-items:center;overflow:hidden}
+.hello-word{font:500 clamp(48px,10vw,104px) var(--sans);letter-spacing:-.075em;opacity:1;transform:translateY(0);transition:opacity .24s,transform .24s}
+.hello-word.hello-out{opacity:0;transform:translateY(-18px)}
+.opening-rose{width:clamp(95px,15vw,145px);height:auto;margin:3px 0 0;overflow:visible;opacity:0;transform:translateY(18px) scale(.72);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.opening-reveal .opening-rose{opacity:1;transform:translateY(0) scale(1)}
+.opening-petals{transform-origin:90px 90px;transform:scale(.08) rotate(-25deg);transition:transform 1.15s cubic-bezier(.16,1,.3,1)}
+.opening-reveal .opening-petals{transform:scale(1) rotate(0)}
+.opening-stem,.opening-leaf{opacity:0;transition:opacity .7s .35s}
+.opening-reveal .opening-stem,.opening-reveal .opening-leaf{opacity:1}
+.opening-name{margin:4px 0 0;font:500 clamp(28px,5vw,48px) var(--sans);letter-spacing:-.065em;opacity:0;transform:translateY(14px);transition:opacity .7s .45s,transform .7s .45s}
+.opening-reveal .opening-name{opacity:1;transform:translateY(0)}
+.opening-surname{margin:5px 0 0;opacity:0;transition:opacity .7s .7s}
+.opening-reveal .opening-surname{opacity:1}
+.opening-skip{margin-top:24px;padding:9px 13px;border:1px solid #c8c5b9;background:transparent;color:#5d6259;font:9px var(--mono);letter-spacing:.1em;cursor:pointer}
+.opening-exit{opacity:0;visibility:hidden;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.opening-intro,.opening-rose,.opening-petals,.opening-name,.opening-surname,.opening-stem,.opening-leaf,.hello-word{transition:none}}
