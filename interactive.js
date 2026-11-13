@@ -51,7 +51,39 @@
     </article>
    </section>`);
  }
- const intro=q('#voice-intro');
+ // Full-screen hello -> rose -> name reveal on every fresh page load.
+ const opening=document.createElement('div');
+ opening.className='opening-intro';
+ opening.setAttribute('role','status');
+ opening.setAttribute('aria-label','Welcome');
+ opening.innerHTML=`<div class="opening-inner">
+  <p class="opening-overline">A PERSONAL PORTFOLIO</p>
+  <div class="opening-hello" aria-live="polite"><span class="hello-word">HELLO</span></div>
+  <svg class="opening-rose" viewBox="0 0 180 210" aria-hidden="true">
+   <path class="opening-stem" d="M91 105 C93 142 84 165 91 194" fill="none" stroke="#6f8b60" stroke-width="4" stroke-linecap="round"/>
+   <path class="opening-leaf" d="M89 158 C57 132 43 154 89 169Z" fill="#66875b"/>
+   <g class="opening-petals">
+    <path d="M90 91 C48 67 56 23 86 48 C85 8 133 18 111 57 C153 34 164 76 119 92 C151 120 112 146 91 111 C66 149 29 116 64 91 C28 71 54 42 90 91Z" fill="#a72e36"/>
+    <path d="M90 91 C66 72 82 49 98 62 C119 49 127 76 105 91 C121 106 96 123 84 101Z" fill="#d65b61"/>
+   </g>
+  </svg>
+  <h1 class="opening-name">Mohamed Afnnan</h1>
+  <p class="opening-surname">VEETTILAYIL</p>
+  <button class="opening-skip" type="button">SKIP INTRO ↗</button>
+ </div>`;
+ document.body.appendChild(opening);
+ const hello=q('.hello-word',opening);
+ const greetings=['HELLO','നമസ്കാരം','السلام عليكم'];
+ let greetingIndex=0;
+ const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ greetings.forEach((word,index)=>{if(index===0)return;setTimeout(()=>{if(hello&&!opening.classList.contains('opening-exit')){hello.classList.add('hello-out');setTimeout(()=>{hello.textContent=word;hello.classList.remove('hello-out');},260);}},index*650);});
+ const revealAt=reducedMotion?250:2100;
+ const finishAt=reducedMotion?1100:4400;
+ setTimeout(()=>opening.classList.add('opening-reveal'),revealAt);
+ const dismiss=()=>{if(opening.classList.contains('opening-exit'))return;opening.classList.add('opening-exit');setTimeout(()=>opening.remove(),850);};
+ const dismissTimer=setTimeout(dismiss,finishAt);
+ q('.opening-skip',opening)?.addEventListener('click',()=>{clearTimeout(dismissTimer);dismiss();});
+\n const intro=q('#voice-intro');
  q('#voice-open')?.addEventListener('click',()=>intro?.classList.add('is-open'));
  q('#voice-close')?.addEventListener('click',()=>intro?.classList.remove('is-open'));
  q('#voice-listen')?.addEventListener('click',()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){q('#voice-status').textContent='Voice recognition is not supported here. Use Play Spoken Intro instead.';return;}const rec=new SR();rec.lang='en-IN';rec.interimResults=false;q('#voice-status').textContent='Listening… say hello.';rec.onresult=e=>{q('#voice-status').textContent='Voice detected: '+e.results[0][0].transcript+'. Welcome to the portfolio.';};rec.onerror=()=>q('#voice-status').textContent='Microphone unavailable or permission denied. You can still play the spoken introduction.';rec.start();});
