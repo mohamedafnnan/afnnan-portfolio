@@ -83,7 +83,8 @@
  const dismiss=()=>{if(opening.classList.contains('opening-exit'))return;opening.classList.add('opening-exit');setTimeout(()=>opening.remove(),850);};
  const dismissTimer=setTimeout(dismiss,finishAt);
  q('.opening-skip',opening)?.addEventListener('click',()=>{clearTimeout(dismissTimer);dismiss();});
-\n const intro=q('#voice-intro');
+
+ const intro=q('#voice-intro');
  q('#voice-open')?.addEventListener('click',()=>intro?.classList.add('is-open'));
  q('#voice-close')?.addEventListener('click',()=>intro?.classList.remove('is-open'));
  q('#voice-listen')?.addEventListener('click',()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){q('#voice-status').textContent='Voice recognition is not supported here. Use Play Spoken Intro instead.';return;}const rec=new SR();rec.lang='en-IN';rec.interimResults=false;q('#voice-status').textContent='Listening… say hello.';rec.onresult=e=>{q('#voice-status').textContent='Voice detected: '+e.results[0][0].transcript+'. Welcome to the portfolio.';};rec.onerror=()=>q('#voice-status').textContent='Microphone unavailable or permission denied. You can still play the spoken introduction.';rec.start();});
