@@ -103,7 +103,6 @@
   {match:'Hairpin Bend Traffic System',input:'A traffic-management problem context. Exact sensors and signals were not documented.',process:'IDEA Lab project-team involvement with an IoT Specialist role listed. Architecture and personal implementation details remain unverified.',output:'A team project entry; prototype status and measured results were not supplied.'},
   {match:'Navodhayam',input:'2025 cutoff-rank information and current-student branch contacts.',process:'A helpdesk organized across engineering branches with 14 student volunteers.',output:'Admission guidance and direct student context for aspirants; the project page links to its public Instagram.'}
  ];
- q$('.project')?.forEach?.(()=>{});
  document.querySelectorAll('.project').forEach(card=>{
   const title=q('h3',card)?.textContent?.trim();
   const data=projectBreakdowns.find(item=>item.match===title);
@@ -163,7 +162,7 @@
   const pointForTime=t=>{
    let i=0;while(i<frames.length-2&&t>frames[i+1].t)i++;
    const a=frames[i],b=frames[i+1],u=clamp((t-a.t)/(b.t-a.t),0,1),e=ease(u);
-   return {x:mix(a.p.x,b.p.x,e),y:mix(a.p.y,b.p.y,e),grip:t<2.15||t>=4?1:0,carrying:t>=2.15&&t<4,label:b.label};
+   return {x:mix(a.p.x,b.p.x,e),y:mix(a.p.y,b.p.y,e),grip:t<2.15||t>=4?1:0,carrying:t>=2.15&&t<4,delivered:t>=4&&t<7.4,label:b.label};
   };
   const svgPoint=e=>{
    const p=armSvg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;
@@ -179,22 +178,22 @@
    shoulder?.setAttribute('transform',`rotate(${shoulderDelta.toFixed(2)} 120 148)`);
    elbow?.setAttribute('transform',`rotate(${elbowDelta.toFixed(2)} 177 91)`);
   };
-  const setPayload=(point,gripping,carrying)=>{
-   pick?.setAttribute('opacity',gripping||carrying?'0':'1');
+  const setPayload=(point,gripping,carrying,delivered)=>{
+   pick?.setAttribute('opacity',gripping||carrying||delivered?'0':'1');
    carry?.setAttribute('opacity',carrying?'1':'0');
-   drop?.setAttribute('opacity',gripping||carrying?'0':point.x>195&&point.y<120?'1':'0');
+   drop?.setAttribute('opacity',delivered?'1':'0');
    pick?.setAttribute('transform',`translate(${pickup.x} ${pickup.y})`);
    carry?.setAttribute('transform',`translate(${point.x.toFixed(1)} ${point.y.toFixed(1)})`);
    drop?.setAttribute('transform',`translate(${delivery.x} ${delivery.y})`);
   };
-  const paint=(point,grip,carrying,label)=>{
-   displayTarget.x=mix(displayTarget.x,point.x,reduced?.09:.18);displayTarget.y=mix(displayTarget.y,point.y,reduced?.09:.18);
+  const paint=(point,grip,carrying,label,delivered=false)=>{
+   displayTarget.x=mix(displayTarget.x,point.x,reduced?0.09:0.18);displayTarget.y=mix(displayTarget.y,point.y,reduced?0.09:0.18);
    solve(displayTarget);
    const open=grip?17:1;
    jawLeft?.setAttribute('transform',`rotate(${open} 198 70)`);
    jawRight?.setAttribute('transform',`rotate(${-open} 198 70)`);
    targetRing?.setAttribute('cx',point.x);targetRing?.setAttribute('cy',point.y);
-   setPayload(point,grip===0,carrying);
+   setPayload(point,grip===0,carrying,delivered);
    if(state&&label)state.textContent=mode==='track'?'MANUAL · TRACKING TARGET':paused?'PAUSED · HOLDING POSITION':label;
   };
   const loop=now=>{
@@ -202,8 +201,8 @@
     if(mode==='auto'){
      const elapsed=((now-cycleStart)/1000)%7.5,phase=pointForTime(elapsed);
      if(elapsed<.08){pick?.setAttribute('opacity','1');drop?.setAttribute('opacity','0');}
-     paint(phase,phase.grip,phase.carrying,phase.label);
-    }else paint(manualTarget,1,false,'MANUAL · TRACKING TARGET');
+     paint(phase,phase.grip,phase.carrying,phase.label,phase.delivered);
+    }else paint(manualTarget,1,false,'MANUAL · TRACKING TARGET',false);
    }
    lastFrame=now;requestAnimationFrame(loop);
   };
@@ -279,7 +278,7 @@
   const ctx=canvas.getContext('2d');let w=320,h=250,dpr=1,ball={x:92,y:145,vx:0,vy:0,r:8},drag=null,score=0,active=false,tableY=207;
   const resize=()=>{const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=Math.max(260,r.width);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);tableY=h-38;if(!active&&!drag){ball.x=w*.28;ball.y=tableY-48;}};
   new ResizeObserver(resize).observe(canvas);resize();
-  const pos=e=>{const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};};
+  const tclamp=(v,a,b)=>Math.max(a,Math.min(b,v));const pos=e=>{const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};};
   const reset=()=>{ball={x:w*.28,y:tableY-48,vx:0,vy:0,r:8};drag=null;active=false;score=0;};
   const draw=()=>{
    ctx.clearRect(0,0,w,h);
@@ -289,7 +288,7 @@
    ctx.fillStyle='#b7d6b1';ctx.font='10px monospace';ctx.fillText('RALLY '+score,14,18);ctx.fillText(active?'BALL IN PLAY':'SLINGSHOT READY',w-130,18);
    if(active&&!drag){
     ball.x+=ball.vx;ball.y+=ball.vy;ball.vy+=.19;ball.vx*=.999;
-    if(ball.x<ball.r||ball.x>w-ball.r){ball.vx*=-.82;ball.x=clamp(ball.x,ball.r,w-ball.r);}
+    if(ball.x<ball.r||ball.x>w-ball.r){ball.vx*=-.82;ball.x=tclamp(ball.x,ball.r,w-ball.r);}
     if(ball.y<ball.r){ball.y=ball.r;ball.vy=Math.abs(ball.vy)*.82;}
     if(ball.y+ball.r>=tableY){ball.y=tableY-ball.r;ball.vy=-Math.abs(ball.vy)*.76;score++;if(Math.abs(ball.vy)<1.1&&Math.abs(ball.vx)<1.1)active=false;}
     if(ball.x>w+30||ball.x< -30||ball.y>h+30)active=false;
@@ -304,7 +303,7 @@
   };draw();
   canvas.addEventListener('pointerdown',e=>{if(active)return;const p=pos(e);if(Math.hypot(p.x-(ball.x-36),p.y-(ball.y-27))<54||Math.hypot(p.x-ball.x,p.y-ball.y)<36){drag={origin:{x:ball.x-36,y:ball.y+12},current:p};canvas.setPointerCapture(e.pointerId);}});
   canvas.addEventListener('pointermove',e=>{if(drag)drag.current=pos(e);});
-  canvas.addEventListener('pointerup',()=>{if(!drag)return;ball.vx=clamp((drag.origin.x-drag.current.x)*.17,-16,16);ball.vy=clamp((drag.origin.y-drag.current.y)*.17,-18,18);active=true;drag=null;});
+  canvas.addEventListener('pointerup',()=>{if(!drag)return;ball.vx=tclamp((drag.origin.x-drag.current.x)*.17,-16,16);ball.vy=tclamp((drag.origin.y-drag.current.y)*.17,-18,18);active=true;drag=null;});
   canvas.addEventListener('pointercancel',()=>{drag=null;});
   q('#tt-reset')?.addEventListener('click',reset);
  } q('#rose-trigger')?.addEventListener('click',()=>q('#rose-reveal')?.classList.toggle('is-visible'));
