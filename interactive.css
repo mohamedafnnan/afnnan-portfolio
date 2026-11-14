@@ -196,3 +196,13 @@
 .opening-intro.opening-surname-reveal .opening-surname{opacity:1!important}
 .opening-intro .opening-petals{transform:scale(.08) rotate(-25deg)}
 .opening-intro.opening-reveal .opening-petals{transform:scale(1) rotate(0)}
+
+@media(prefers-reduced-motion:reduce){
+ .opening-intro .opening-petals{transform:scale(1);opacity:.12;transition:opacity .35s ease}
+ .opening-intro.opening-reveal .opening-petals{transform:scale(1);opacity:1}
+ .opening-intro .opening-rose{transform:none;transition:opacity .35s ease}
+ .opening-intro .opening-name{transform:none!important;transition:opacity .35s ease}
+ .opening-intro .opening-surname{transition:opacity .35s ease}
+ .arm-control-bar button,.credential-filters button{transition:none}
+}
+.magnetic{transition:translate .18s ease-out}
