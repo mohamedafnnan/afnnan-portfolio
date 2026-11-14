@@ -4,6 +4,7 @@
 
   const hello = intro.querySelector('.hello-word');
   const skip = intro.querySelector('.opening-skip');
+  const voice = intro.querySelector('.opening-voice');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const timers = [];
   let dismissed = false;
@@ -50,6 +51,44 @@
       later(reveal, 2850);
       later(dismiss, 5900);
     });
+  }
+
+
+  if (voice) {
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Recognition) {
+      voice.textContent = 'VOICE NOT AVAILABLE';
+      voice.disabled = true;
+      voice.title = 'Speech recognition is not supported in this browser.';
+    } else {
+      voice.addEventListener('click', () => {
+        const recognition = new Recognition();
+        recognition.lang = 'en-IN';
+        recognition.interimResults = false;
+        voice.textContent = 'LISTENING…';
+        voice.disabled = true;
+        try {
+          recognition.onresult = event => {
+            const spoken = event.results[0][0].transcript;
+            timers.forEach(window.clearTimeout);
+            hello.textContent = /salaam|assalamu/i.test(spoken) ? 'السلام عليكم' : /namask|malayalam/i.test(spoken) ? 'നമസ്കാരം' : 'HELLO';
+            hello.classList.remove('hello-out');
+            reveal();
+            voice.textContent = 'WELCOME';
+            later(dismiss, 3600);
+          };
+          recognition.onerror = () => {
+            voice.textContent = 'TRY AGAIN';
+            voice.disabled = false;
+          };
+          recognition.onend = () => { if (!dismissed && voice.textContent === 'LISTENING…') { voice.textContent = 'SAY HELLO'; voice.disabled = false; } };
+          recognition.start();
+        } catch (error) {
+          voice.textContent = 'TRY AGAIN';
+          voice.disabled = false;
+        }
+      });
+    }
   }
 
   skip?.addEventListener('click', dismiss);
