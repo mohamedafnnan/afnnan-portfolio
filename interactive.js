@@ -59,26 +59,6 @@
    </section>
 `);
  }
- // Staged opening: greeting changes first, then rose, then the name signature.
- const opening=q('.opening-intro');
- if(opening){
-  const hello=q('.hello-word',opening);
-  const greetings=['HELLO','നമസ്കാരം','السلام عليكم'];
-  const swapGreeting=(word)=>{
-   if(!hello||opening.classList.contains('opening-exit'))return;
-   hello.classList.add('hello-out');
-   setTimeout(()=>{if(!opening.classList.contains('opening-exit')){hello.textContent=word;hello.classList.remove('hello-out');}},260);
-  };
-  setTimeout(()=>swapGreeting(greetings[1]),1150);
-  setTimeout(()=>swapGreeting(greetings[2]),2300);
-  setTimeout(()=>opening.classList.add('opening-reveal'),3450);
-  setTimeout(()=>opening.classList.add('opening-name-reveal'),4650);
-  setTimeout(()=>opening.classList.add('opening-surname-reveal'),5100);
-  const dismiss=()=>{if(opening.classList.contains('opening-exit'))return;opening.classList.add('opening-exit');setTimeout(()=>opening.remove(),850);};
-  const dismissTimer=setTimeout(dismiss,7600);
-  q('.opening-skip',opening)?.addEventListener('click',()=>{clearTimeout(dismissTimer);dismiss();});
- }
-
  // Project disassembly: facts are drawn from the existing project copy; unknowns stay explicit.
  const projectBreakdowns=[
   {match:'DAWN / Rover team',input:'Rover platform, mission context and team control requirements.',process:'Controls-team participation is documented. Personal controller code, algorithms and subsystem ownership are not specified in the supplied portfolio.',output:'A team rover experience. No unverified personal hardware or performance claim is made.'},
