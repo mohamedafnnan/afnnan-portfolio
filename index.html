@@ -138,9 +138,11 @@
               <rect x="40" y="245" width="118" height="36" rx="4" class="robot-tray"/><text x="99" y="268" class="robot-svg-label">INPUT</text>
               <rect x="362" y="245" width="118" height="36" rx="4" class="robot-tray robot-tray--out"/><text x="421" y="268" class="robot-svg-label">OUTPUT</text>
               <g id="robot-base"><rect x="219" y="251" width="82" height="25" rx="5" class="robot-metal"/><circle cx="260" cy="244" r="18" class="robot-joint"/></g>
-              <g id="robot-upper"><path d="M260 244 L260 151" class="robot-link"/><path d="M255 238 L255 157" class="robot-link-highlight"/><circle cx="260" cy="151" r="13" class="robot-joint"/></g>
-              <g id="robot-lower"><path d="M260 151 L260 82" class="robot-link"/><path d="M255 145 L255 87" class="robot-link-highlight"/><circle cx="260" cy="82" r="11" class="robot-joint"/></g>
-              <g id="robot-gripper"><path d="M260 82 V64" class="robot-link"/><path id="robot-jaw-left" d="M260 64 L246 48" class="robot-jaw"/><path id="robot-jaw-right" d="M260 64 L274 48" class="robot-jaw"/></g>
+              <g id="robot-upper"><path d="M260 244 L260 151" class="robot-link"/><path d="M255 238 L255 157" class="robot-link-highlight"/><circle cx="260" cy="151" r="13" class="robot-joint"/>
+                <g id="robot-lower"><path d="M260 151 L260 82" class="robot-link"/><path d="M255 145 L255 87" class="robot-link-highlight"/><circle cx="260" cy="82" r="11" class="robot-joint"/>
+                  <g id="robot-gripper"><path d="M260 82 V64" class="robot-link"/><path id="robot-jaw-left" d="M260 64 L246 48" class="robot-jaw"/><path id="robot-jaw-right" d="M260 64 L274 48" class="robot-jaw"/></g>
+                </g>
+              </g>
               <circle id="robot-payload" cx="99" cy="232" r="9" class="robot-payload"/>
               <circle id="robot-target" cx="260" cy="82" r="27" class="robot-target"/>
               <g class="robot-svg-label"><text x="260" y="316" text-anchor="middle">2-AXIS PICK / PLACE DEMONSTRATION</text></g>
