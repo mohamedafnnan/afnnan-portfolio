@@ -60,7 +60,7 @@
       if (command === 'alarm') { alarm = true; message.textContent = 'Test alarm raised. Acknowledge by opening the Overview tab.'; log('ALARM TEST: high temperature simulated'); }
       update();
     }));
-    $$('[data-plant="overview"]', room).forEach(button => button.addEventListener('click', () => { if (alarm) { alarm = false; log('Operator acknowledged demo alarm'); update(); } }));
+    $$('[data-plant="overview"]', room).forEach(button => button.addEventListener('click', () => { if (alarm) { alarm = false; message.textContent = 'Demo alarm acknowledged by the operator.'; log('Operator acknowledged demo alarm'); update(); } }));
     $('#clear-events')?.addEventListener('click', () => { eventList.replaceChildren(); log('Event log cleared by operator'); });
     const tick = () => {
       if (clock) clock.textContent = time();
@@ -107,6 +107,8 @@
     const paint = pose => {
       upper?.setAttribute('transform', 'rotate(' + pose.shoulder + ' 260 244)');
       lower?.setAttribute('transform', 'rotate(' + pose.elbow + ' 260 151)');
+      $('#robot-jaw-left')?.setAttribute('d', pose.grip ? 'M260 64 L251 51' : 'M260 64 L242 42');
+      $('#robot-jaw-right')?.setAttribute('d', pose.grip ? 'M260 64 L269 51' : 'M260 64 L278 42');
       const tip = endpoint(pose);
       if (payload) {
         const atInput = { x: 99, y: 232 }, atOutput = { x: 421, y: 232 };
