@@ -152,7 +152,7 @@
   const pick=q('#arm-pick-payload',armSvg),carry=q('#arm-carry-payload',armSvg),drop=q('#arm-drop-payload',armSvg);
   const targetRing=q('.arm-target-ring',armSvg),state=q('#arm-state'),run=q('#arm-run-cycle'),track=q('#arm-track-toggle'),pause=q('#arm-pause');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const L1=Math.hypot(57,57),L2=Math.hypot(32,15),upperRest=-Math.PI/4,elbowRest=Math.atan2(15,32)-upperRest;
+  const L1=Math.hypot(57,57),L2=Math.hypot(32,15),upperRest=-Math.PI/4,elbowRest=Math.atan2(-15,32)-upperRest;
   const home={x:210,y:76},pickup={x:185,y:140},delivery={x:205,y:100};
   const frames=[{t:0,p:home,grip:1,carry:false,label:'AUTO · READY'},{t:1.75,p:pickup,grip:1,carry:false,label:'APPROACHING INPUT'},{t:2.15,p:pickup,grip:0,carry:true,label:'GRIPPING PAYLOAD'},{t:3.55,p:delivery,grip:0,carry:true,label:'TRANSFER IN PROGRESS'},{t:4,p:delivery,grip:1,carry:false,label:'PAYLOAD RELEASED'},{t:5.35,p:home,grip:1,carry:false,label:'RETURNING TO HOME'},{t:7.4,p:home,grip:1,carry:false,label:'AUTO · READY'}];
   let mode='auto',paused=false,cycleStart=performance.now(),manualTarget={...home},lastFrame=0,displayTarget={...home};
@@ -170,7 +170,7 @@
    const local=p.matrixTransform(ctm.inverse());return{x:clamp(local.x,48,225),y:clamp(local.y,55,175)};
   };
   const solve=point=>{
-   const dx=point.x-120,dy=point.y-148,d=clamp(Math.hypot(dx,dy),Math.abs(L1-L2)+1,L1+L2-1);
+   const dx=point.x-120,dy=point.y-148,d=clamp(Math.hypot(dx,dy),Math.abs(L1-L2)+1,L1+L2-.35);
    const cos=clamp((d*d-L1*L1-L2*L2)/(2*L1*L2),-1,1),theta2=Math.acos(cos);
    const theta1=Math.atan2(dy,dx)-Math.atan2(L2*Math.sin(theta2),L1+L2*Math.cos(theta2));
    const shoulderDelta=(theta1-upperRest)*180/Math.PI,elbowDelta=(theta2-elbowRest)*180/Math.PI;
@@ -284,12 +284,13 @@
    ctx.clearRect(0,0,w,h);
    ctx.fillStyle='#17231f';ctx.fillRect(0,0,w,h);
    ctx.strokeStyle='#52685b';ctx.lineWidth=1;ctx.setLineDash([5,7]);ctx.beginPath();ctx.moveTo(w/2,18);ctx.lineTo(w/2,tableY);ctx.stroke();ctx.setLineDash([]);
-   ctx.strokeStyle='#b7d6b1';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,tableY);ctx.lineTo(w-12,tableY);ctx.stroke();
+   ctx.strokeStyle='#b7d6b1';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,tableY);ctx.lineTo(w-12,tableY);ctx.stroke();ctx.strokeStyle='#90a895';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w/2,tableY-58);ctx.lineTo(w/2,tableY);ctx.stroke();
    ctx.fillStyle='#b7d6b1';ctx.font='10px monospace';ctx.fillText('RALLY '+score,14,18);ctx.fillText(active?'BALL IN PLAY':'SLINGSHOT READY',w-130,18);
    if(active&&!drag){
     ball.x+=ball.vx;ball.y+=ball.vy;ball.vy+=.19;ball.vx*=.999;
     if(ball.x<ball.r||ball.x>w-ball.r){ball.vx*=-.82;ball.x=tclamp(ball.x,ball.r,w-ball.r);}
     if(ball.y<ball.r){ball.y=ball.r;ball.vy=Math.abs(ball.vy)*.82;}
+    if(ball.x-ball.r<w/2&&ball.x+ball.r>=w/2&&ball.y>tableY-58){ball.x=w/2-ball.r;ball.vx=-Math.abs(ball.vx)*.45;ball.vy-=.6;}
     if(ball.y+ball.r>=tableY){ball.y=tableY-ball.r;ball.vy=-Math.abs(ball.vy)*.76;score++;if(Math.abs(ball.vy)<1.1&&Math.abs(ball.vx)<1.1)active=false;}
     if(ball.x>w+30||ball.x< -30||ball.y>h+30)active=false;
    }
