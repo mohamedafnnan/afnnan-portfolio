@@ -2,11 +2,15 @@
 
 Personal portfolio website for Mohamed Afnnan Veettilayil, an Electronics and Instrumentation Engineering undergraduate at FISAT. The site brings together documented engineering work, editorial design, technical writing, certificates, recognition, community projects, and an interactive 3D portfolio field.
 
-## Live links
+## Deployment
 
-- **Portfolio:** <https://mohamed-afnnan-portfolio.netlify.app/>
-- **DAWN interactive experience:** <https://mohamed-afnnan-portfolio.netlify.app/dawn/>
-- **Netlify project:** <https://app.netlify.com/projects/mohamed-afnnan-portfolio>
+- **GitHub Pages target:** <https://mohamedafnnan.github.io/afnnan-portfolio/>
+- **DAWN 3D experience:** <https://mohamedafnnan.github.io/afnnan-portfolio/dawn/>
+- **Previous Netlify deployment:** <https://mohamed-afnnan-portfolio.netlify.app/>
+
+GitHub Pages deployment is automated by `.github/workflows/pages.yml`. Every push to `main` builds the static site and publishes it through GitHub Actions. The workflow prepares the project for GitHub's repository subpath (`/afnnan-portfolio/`), so root-relative assets and DAWN's Three.js/Rapier imports resolve correctly.
+
+The GitHub Pages URL becomes available after the first successful Actions deployment. The previous Netlify deployment is retained as a fallback and is not changed by this workflow.
 
 ## What is included
 
@@ -43,21 +47,17 @@ On mobile, use the on-screen touch controls.
 
 ## Performance notes
 
-The live deployment was tested at desktop `1440 × 900` and mobile `390 × 844` viewport sizes.
+The previous live deployment was tested at desktop `1440 × 900` and mobile `390 × 844` viewport sizes.
 
 - Desktop DAWN boot: approximately 9 seconds
 - Mobile DAWN boot: approximately 7 seconds
 - Both modes reached `Field online — press ROLL OUT`
-- No failed network requests or JavaScript page errors were observed
+- No failed network requests or JavaScript page errors were observed in that earlier deployment
 - Procedural mode transfers approximately 2.3 MB of runtime resources
 - Detailed GLBs are opt-in rather than part of the default boot path
 - Mobile terrain and geological instance density are reduced automatically
 
-The main portfolio transferred approximately 526 KB during the live browser audit.
-
-## SEO status
-
-The deployed pages include page titles, meta descriptions, Open Graph metadata, structured headings, HTTPS, responsive layouts, and image alternative text. Canonical URLs, `robots.txt`, `sitemap.xml`, and JSON-LD structured data remain possible future improvements.
+The main portfolio transferred approximately 526 KB during the earlier browser audit. These figures describe the previous deployment and have not yet been re-measured on GitHub Pages.
 
 ## Project structure
 
@@ -66,6 +66,8 @@ The deployed pages include page titles, meta descriptions, Open Graph metadata, 
 ├── index.html                 # Main portfolio page
 ├── portfolio.css              # Main portfolio styling
 ├── portfolio.js               # Main portfolio interactions
+├── interactive.css            # Interactive experience styling
+├── interactive.js             # Interactive portfolio features
 ├── assets/                    # Evidence, publications, images, fonts
 ├── dawn/
 │   ├── index.html             # DAWN entry screen
@@ -73,6 +75,8 @@ The deployed pages include page titles, meta descriptions, Open Graph metadata, 
 │   ├── assets/rover/          # Optimized rover GLBs
 │   ├── src/                   # Three.js, Rapier, HUD, missions, scene code
 │   └── vendor/                # Local Three.js and Rapier runtime files
+├── .github/workflows/
+│   └── pages.yml              # GitHub Pages build and deployment
 ├── manifest.webmanifest       # PWA metadata
 └── sw.js                      # Versioned service-worker shell cache
 ```
@@ -87,6 +91,6 @@ python3 -m http.server 4173
 
 Open <http://localhost:4173/> for the portfolio and <http://localhost:4173/dawn/> for DAWN.
 
-## Deployment
+## Deployment details
 
-The site is deployed to Netlify from this static project root. The public GitHub repository is the source for the current project history, while the Netlify site serves the production deployment.
+No bundler or server-side runtime is required for the current site. GitHub Actions copies the static project into a Pages artifact and adjusts root-relative paths for the repository URL. The deployment workflow runs on pushes to `main` and can also be started manually from the repository's Actions tab.
