@@ -199,7 +199,7 @@
   const loop=now=>{
    if(!paused){
     if(mode==='auto'){
-     const elapsed=((now-cycleStart)/1000)%7.5,phase=pointForTime(elapsed);
+     const cycleDuration=reduced?10.5:7.5,elapsed=((now-cycleStart)/1000)%cycleDuration,phase=pointForTime(elapsed*(7.5/cycleDuration));
      if(elapsed<.08){pick?.setAttribute('opacity','1');drop?.setAttribute('opacity','0');}
      paint(phase,phase.grip,phase.carrying,phase.label,phase.delivered);
     }else paint(manualTarget,1,false,'MANUAL · TRACKING TARGET',false);
@@ -223,9 +223,9 @@
    const req=indexedDB.open(DB,1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:'id'});};
    req.onsuccess=()=>{memoryDb=req.result;resolve(memoryDb);};req.onerror=()=>reject(req.error);
   });
-  const transact=(mode,fn)=>new Promise((resolve,reject)=>{const tx=memoryDb.transaction(STORE,mode),store=tx.objectStore(STORE);fn(store,resolve,reject);tx.onerror=()=>reject(tx.error);});
-  const save=record=>transact('readwrite',(store,resolve)=>{store.put(record);resolve();});
-  const remove=id=>transact('readwrite',(store,resolve)=>{store.delete(id);resolve();});
+  const transact=(mode,fn)=>new Promise((resolve,reject)=>{const tx=memoryDb.transaction(STORE,mode),store=tx.objectStore(STORE);let result;try{result=fn(store);}catch(error){reject(error);return;}tx.oncomplete=()=>resolve(result);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Storage transaction aborted.'));});
+  const save=record=>transact('readwrite',store=>store.put(record));
+  const remove=id=>transact('readwrite',store=>store.delete(id));
   const all=()=>new Promise((resolve,reject)=>{const req=memoryDb.transaction(STORE,'readonly').objectStore(STORE).getAll();req.onsuccess=()=>resolve(req.result||[]);req.onerror=()=>reject(req.error);});
   const makeCard=record=>{
    const card=document.createElement('article');card.className='memory-card';
@@ -280,14 +280,15 @@
   new ResizeObserver(resize).observe(canvas);resize();
   const tclamp=(v,a,b)=>Math.max(a,Math.min(b,v));const pos=e=>{const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};};
   const reset=()=>{ball={x:w*.28,y:tableY-48,vx:0,vy:0,r:8};drag=null;active=false;score=0;};
-  const draw=()=>{
+  let previousFrame=0;const draw=now=>{
+   const dt=previousFrame?Math.min((now-previousFrame)/16.667,2):1;previousFrame=now;
    ctx.clearRect(0,0,w,h);
    ctx.fillStyle='#17231f';ctx.fillRect(0,0,w,h);
    ctx.strokeStyle='#52685b';ctx.lineWidth=1;ctx.setLineDash([5,7]);ctx.beginPath();ctx.moveTo(w/2,18);ctx.lineTo(w/2,tableY);ctx.stroke();ctx.setLineDash([]);
    ctx.strokeStyle='#b7d6b1';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,tableY);ctx.lineTo(w-12,tableY);ctx.stroke();ctx.strokeStyle='#90a895';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w/2,tableY-58);ctx.lineTo(w/2,tableY);ctx.stroke();
    ctx.fillStyle='#b7d6b1';ctx.font='10px monospace';ctx.fillText('RALLY '+score,14,18);ctx.fillText(active?'BALL IN PLAY':'SLINGSHOT READY',w-130,18);
    if(active&&!drag){
-    ball.x+=ball.vx;ball.y+=ball.vy;ball.vy+=.19;ball.vx*=.999;
+    ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;ball.vy+=.19*dt;ball.vx*=Math.pow(.999,dt);
     if(ball.x<ball.r||ball.x>w-ball.r){ball.vx*=-.82;ball.x=tclamp(ball.x,ball.r,w-ball.r);}
     if(ball.y<ball.r){ball.y=ball.r;ball.vy=Math.abs(ball.vy)*.82;}
     if(ball.x-ball.r<w/2&&ball.x+ball.r>=w/2&&ball.y>tableY-58){ball.x=w/2-ball.r;ball.vx=-Math.abs(ball.vx)*.45;ball.vy-=.6;}
