@@ -60,3 +60,54 @@
 .opening-skip{margin-top:24px;padding:9px 13px;border:1px solid #c8c5b9;background:transparent;color:#5d6259;font:9px var(--mono);letter-spacing:.1em;cursor:pointer}
 .opening-exit{opacity:0;visibility:hidden;pointer-events:none}
 @media(prefers-reduced-motion:reduce){.opening-intro,.opening-rose,.opening-petals,.opening-name,.opening-surname,.opening-stem,.opening-leaf,.hello-word{transition:none}}
+
+
+/* Motion pass: explicit SVG joint pivots and a reduced-motion fade variant. */
+.scada-arm,
+.arm-upper,
+.arm-grip-group{
+  transform-box:view-box;
+}
+.scada-arm{
+  transform-origin:50% 82.6087%;
+  animation:arm-base-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
+}
+.arm-upper{
+  transform-origin:50% 64.3478%;
+  animation:arm-elbow-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
+}
+.arm-grip-group{
+  transform-origin:73.75% 39.5652%;
+  animation:arm-wrist-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
+}
+@keyframes arm-base-cycle{
+  0%,100%{transform:rotate(-15deg)}
+  50%{transform:rotate(15deg)}
+}
+@keyframes arm-elbow-cycle{
+  0%,100%{transform:rotate(13deg)}
+  50%{transform:rotate(-17deg)}
+}
+@keyframes arm-wrist-cycle{
+  0%,100%{transform:rotate(-8deg)}
+  50%{transform:rotate(12deg)}
+}
+.opening-petals{
+  transform-box:view-box;
+  transform-origin:50% 42.857%;
+}
+@media(prefers-reduced-motion:reduce){
+  /* Keep the greeting legible with gentle fades instead of large movement. */
+  .opening-rose,.opening-name{transform:none;transition:opacity .35s ease}
+  .opening-petals{transform:none;opacity:.2;transition:opacity .35s ease}
+  .opening-reveal .opening-petals{transform:none;opacity:1}
+  .opening-stem,.opening-leaf,.opening-surname{transition:opacity .3s ease}
+  .hello-word{transform:none;transition:opacity .15s ease}
+  /* A smaller, slower arm cycle remains visible without a wide sweep. */
+  .scada-arm{animation:arm-base-reduced 14s ease-in-out infinite}
+  .arm-upper{animation:arm-elbow-reduced 14s ease-in-out infinite}
+  .arm-grip-group{animation:arm-wrist-reduced 14s ease-in-out infinite}
+}
+@keyframes arm-base-reduced{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes arm-elbow-reduced{0%,100%{transform:rotate(2deg)}50%{transform:rotate(-2deg)}}
+@keyframes arm-wrist-reduced{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
