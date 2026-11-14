@@ -26,21 +26,11 @@ function glowMat(color, intensity = 1.2) {
   return new MeshStandardMaterial({ color, emissive: color, emissiveIntensity: intensity, roughness: 0.5 });
 }
 
-/* Scattered props use a local seeded sequence so every visit has the same outpost layout. */
-function seeded(seed) {
-  let t = seed >>> 0;
-  return () => {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ t >>> 15, 1 | t);
-    r ^= r + Math.imul(r ^ r >>> 7, 61 | r);
-    return ((r ^ r >>> 14) >>> 0) / 4294967296;
-  };
-}
-function scatterProps(g, radius = 8, count = 10) {
-  const random = seeded((Math.round(radius * 1009) + count * 917 + g.children.length * 131) >>> 0);
+/* Scattered functional props so the outpost looks worked-in, not abandoned. */
+function scatterProps(g, rng = 8, count = 10) {
   for (let i = 0; i < count; i++) {
-    const a = random() * Math.PI * 2, r = 4 + random() * radius;
-    const kind = random();
+    const a = Math.random() * Math.PI * 2, r = 4 + Math.random() * rng;
+    const kind = Math.random();
     let p;
     if (kind < 0.35) p = box(0.7, 0.7, 0.7, M.panel, 0, 0.35, 0);          // crate
     else if (kind < 0.6) p = box(0.4, 1.1, 0.4, M.metal, 0, 0.55, 0);      // cabinet
@@ -48,7 +38,7 @@ function scatterProps(g, radius = 8, count = 10) {
     else p = box(1.4, 0.12, 0.5, M.metal, 0, 0.5, 0);                      // workbench
     p.position.x = Math.cos(a) * r;
     p.position.z = Math.sin(a) * r;
-    p.rotation.y = random() * Math.PI;
+    p.rotation.y = Math.random() * Math.PI;
     g.add(p);
   }
 }
