@@ -78,6 +78,58 @@ jobs:
         with:
           enablement: true
 
+      - name: Validate JavaScript and local page assets
+        shell: bash
+        run: |
+          node --check portfolio.js
+          node --check interactive.js
+          node --check opening-intro.js
+          node --check experience-suite.js
+          python3 <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import urlsplit, unquote
+
+          root = Path("_site")
+          base = "/afnnan-portfolio"
+
+          class AssetChecker(HTMLParser):
+              def __init__(self, file):
+                  super().__init__()
+                  self.file = file
+                  self.errors = []
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  for key in ("src", "href", "poster"):
+                      value = attrs.get(key)
+                      if not value:
+                          continue
+                      parsed = urlsplit(value)
+                      path = unquote(parsed.path)
+                      if not path or path.startswith(("#", "//")) or parsed.scheme or path.startswith(("data:", "mailto:", "tel:", "javascript:")):
+                          continue
+                      if path.startswith(base + "/"):
+                          path = path[len(base):]
+                      if path.startswith("/"):
+                          target = root / path.lstrip("/")
+                      else:
+                          target = (root / self.file.parent / path).resolve()
+                      if path.endswith("/"):
+                          target = target / "index.html"
+                      if not target.is_file():
+                          self.errors.append(f"{self.file}: {key}={value} -> missing {target}")
+
+          errors = []
+          for file in root.rglob("*.html"):
+              parser = AssetChecker(file.relative_to(root))
+              parser.feed(file.read_text(encoding="utf-8"))
+              errors.extend(parser.errors)
+          if errors:
+              print("\\n".join(errors))
+              raise SystemExit(1)
+          print("JavaScript syntax and local HTML asset references passed.")
+          PY
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
