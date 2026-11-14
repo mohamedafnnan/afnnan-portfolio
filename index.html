@@ -262,6 +262,144 @@
         </div>
       </section>
 
+      <section class="control-room-section" id="control-room" aria-labelledby="control-room-title">
+        <div class="suite-heading">
+          <div><p class="eyebrow">10 / THE CONTROL ROOM</p><h2 id="control-room-title">A portfolio with<br /><em>systems you can touch.</em></h2></div>
+          <p>Explore a simulated plant interface, follow a small pick-and-place robot, and open the work behind the interface. This is a browser demonstration, not a live industrial controller.</p>
+        </div>
+
+        <div class="control-room" aria-label="Simulated SCADA control room">
+          <header class="control-room__top">
+            <div class="control-room__brand"><span class="control-room__mark">AF</span><span><strong>FIELD / 01</strong><small>PROCESS OVERVIEW</small></span></div>
+            <div class="control-room__live"><i></i><span>SIMULATION ONLINE</span><time id="plant-clock">--:--:--</time></div>
+          </header>
+          <div class="control-room__body">
+            <aside class="control-room__rail" aria-label="Plant areas">
+              <button class="plant-tab is-active" type="button" data-plant="overview" aria-pressed="true"><span>01</span><b>OVERVIEW</b></button>
+              <button class="plant-tab" type="button" data-plant="instrumentation" aria-pressed="false"><span>02</span><b>INSTRUMENTS</b></button>
+              <button class="plant-tab" type="button" data-plant="utilities" aria-pressed="false"><span>03</span><b>UTILITIES</b></button>
+              <button class="plant-tab" type="button" data-plant="security" aria-pressed="false"><span>04</span><b>OT SECURITY</b></button>
+            </aside>
+            <div class="control-room__main">
+              <div class="plant-status-row"><div><span class="plant-eyebrow">DEMO FACILITY / PROCESS LINE A</span><h3 id="plant-panel-title">Process overview</h3></div><span class="plant-state" id="plant-state">RUNNING · SIMULATED</span></div>
+              <div class="plant-diagram">
+                <svg viewBox="0 0 700 210" role="img" aria-label="Simplified process line showing a tank, pump, control valve and output">
+                  <defs><linearGradient id="tankFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b7d6b1" stop-opacity=".3"/><stop offset="1" stop-color="#b7d6b1" stop-opacity=".06"/></linearGradient></defs>
+                  <path class="pipe pipe--main" d="M116 105 H248 M324 105 H430 M494 105 H620"/>
+                  <path class="pipe pipe--branch" d="M178 105 V166 H245 M465 105 V48 H550"/>
+                  <rect class="plant-tank" x="48" y="48" width="68" height="114" rx="7"/><rect class="plant-liquid" x="55" y="105" width="54" height="50" rx="3"/>
+                  <path class="plant-tank-cap" d="M48 65 H116 M48 145 H116"/>
+                  <circle class="plant-pump" cx="286" cy="105" r="38"/><path class="plant-pump-mark" d="M270 88 L304 105 L270 122Z"/>
+                  <path class="plant-valve" d="M430 88 L462 105 L430 122Z M494 88 L462 105 L494 122Z"/>
+                  <rect class="plant-sensor" x="590" y="78" width="60" height="54" rx="4"/><path class="plant-sensor-mark" d="M602 116 L615 96 L626 108 L638 88"/>
+                  <g class="plant-tag"><text x="82" y="34">TK-101</text><text x="286" y="53">P-101</text><text x="462" y="53">CV-101</text><text x="620" y="63">FT-101</text></g>
+                  <g class="plant-flow"><circle cx="160" cy="105" r="4"/><circle cx="365" cy="105" r="4"/><circle cx="540" cy="105" r="4"/></g>
+                </svg>
+                <div class="plant-diagram__legend"><span><i class="legend-dot legend-dot--green"></i>Flow path</span><span><i class="legend-dot legend-dot--amber"></i>Control point</span><span><i class="legend-dot legend-dot--grey"></i>Instrument</span></div>
+              </div>
+              <div class="plant-metrics" aria-live="polite">
+                <article><span>TT-101 · TEMPERATURE</span><strong id="metric-temp">28.4 <small>°C</small></strong><i class="metric-track"><b id="metric-temp-bar" style="width:56%"></b></i></article>
+                <article><span>PT-101 · PRESSURE</span><strong id="metric-pressure">2.4 <small>bar</small></strong><i class="metric-track"><b id="metric-pressure-bar" style="width:48%"></b></i></article>
+                <article><span>FT-101 · FLOW RATE</span><strong id="metric-flow">18.2 <small>L/min</small></strong><i class="metric-track"><b id="metric-flow-bar" style="width:61%"></b></i></article>
+                <article><span>LT-101 · TANK LEVEL</span><strong id="metric-level">72 <small>%</small></strong><i class="metric-track"><b id="metric-level-bar" style="width:72%"></b></i></article>
+              </div>
+              <div class="plant-controls">
+                <div><span class="plant-eyebrow">OPERATOR ACTIONS</span><p id="plant-message" aria-live="polite">All demo values are generated locally in this browser.</p></div>
+                <div class="plant-actions"><button type="button" data-command="pump" aria-pressed="true">PUMP: ON</button><button type="button" data-command="valve" aria-pressed="true">VALVE: OPEN</button><button type="button" data-command="alarm">TEST ALARM</button></div>
+              </div>
+            </div>
+            <aside class="control-room__events"><span class="plant-eyebrow">EVENT LOG</span><div id="plant-events" aria-live="polite"><p><time>00:00:00</time> Simulation initialized</p><p><time>00:00:00</time> Operator station ready</p><p><time>00:00:00</time> No active alarms</p></div><button type="button" id="clear-events">CLEAR LOG</button></aside>
+          </div>
+          <footer class="control-room__foot"><span>TRAINING / DEMONSTRATION ONLY</span><span>PLC · HMI · SCADA · OT</span><span>LOCAL BROWSER SIMULATION</span></footer>
+        </div>
+
+        <div class="robot-workcell">
+          <div class="robot-workcell__copy"><p class="eyebrow">ROBOTICS / PICK &amp; PLACE</p><h3>One arm.<br /><em>One complete cycle.</em></h3><p>Watch the arm locate a payload, grip it, transfer it and release it at the output tray. Switch to pointer tracking to move the target manually.</p><div class="robot-controls"><button type="button" id="arm-run">RUN CYCLE</button><button type="button" id="arm-pause" aria-pressed="false">PAUSE</button><button type="button" id="arm-track" aria-pressed="false">TRACK POINTER</button></div><p class="robot-status" id="arm-status" aria-live="polite">AUTO · READY AT HOME POSITION</p></div>
+          <div class="robot-stage">
+            <svg id="portfolio-arm" viewBox="0 0 520 330" role="img" aria-label="Animated two-link robotic arm moving a payload between trays">
+              <defs><linearGradient id="armBody" x1="0" x2="1"><stop stop-color="#9eb99c"/><stop offset="1" stop-color="#54775e"/></linearGradient></defs>
+              <path d="M20 286 H500" class="robot-floor"/>
+              <rect x="40" y="245" width="118" height="36" rx="4" class="robot-tray"/><text x="99" y="268" class="robot-svg-label">INPUT</text>
+              <rect x="362" y="245" width="118" height="36" rx="4" class="robot-tray robot-tray--out"/><text x="421" y="268" class="robot-svg-label">OUTPUT</text>
+              <g id="robot-base"><rect x="219" y="251" width="82" height="25" rx="5" class="robot-metal"/><circle cx="260" cy="244" r="18" class="robot-joint"/></g>
+              <g id="robot-upper"><path d="M260 244 L260 151" class="robot-link"/><path d="M255 238 L255 157" class="robot-link-highlight"/><circle cx="260" cy="151" r="13" class="robot-joint"/></g>
+              <g id="robot-lower"><path d="M260 151 L260 82" class="robot-link"/><path d="M255 145 L255 87" class="robot-link-highlight"/><circle cx="260" cy="82" r="11" class="robot-joint"/></g>
+              <g id="robot-gripper"><path d="M260 82 V64" class="robot-link"/><path id="robot-jaw-left" d="M260 64 L246 48" class="robot-jaw"/><path id="robot-jaw-right" d="M260 64 L274 48" class="robot-jaw"/></g>
+              <circle id="robot-payload" cx="99" cy="232" r="9" class="robot-payload"/>
+              <circle id="robot-target" cx="260" cy="82" r="27" class="robot-target"/>
+              <g class="robot-svg-label"><text x="260" y="316" text-anchor="middle">2-AXIS PICK / PLACE DEMONSTRATION</text></g>
+            </svg>
+            <span class="robot-stage__readout">ARM / 02 · SIMULATED MOTION</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="creative-suite" id="creative-suite" aria-labelledby="creative-suite-title">
+        <div class="suite-heading suite-heading--compact">
+          <div><p class="eyebrow">11 / THE WORKSHOP</p><h2 id="creative-suite-title">Explore the details.<br /><em>Leave something behind.</em></h2></div>
+          <p>Small interactions, useful artifacts and a few things hidden in the margins.</p>
+        </div>
+
+        <div class="workshop-grid">
+          <article class="workshop-card workshop-card--books">
+            <div class="workshop-card__heading"><span class="eyebrow">THE BOOKSHELF</span><h3>Pick a volume.</h3><p>Each spine opens a different part of the portfolio.</p></div>
+            <div class="book-shelf" aria-label="Portfolio bookshelf">
+              <a class="shelf-volume" href="#work"><span>01</span><b>Projects</b><small>WORK / BUILDS</small></a>
+              <a class="shelf-volume" href="#evidence"><span>02</span><b>Evidence</b><small>CERTIFICATES</small></a>
+              <a class="shelf-volume" href="#about"><span>03</span><b>Notes</b><small>POINT OF VIEW</small></a>
+              <a class="shelf-volume" href="#contact"><span>04</span><b>Contact</b><small>OPEN CHANNEL</small></a>
+            </div>
+          </article>
+
+          <article class="workshop-card workshop-card--voice">
+            <div class="workshop-card__heading"><span class="eyebrow">VOICE / GREETING</span><h3>Say hello.</h3><p>Try the microphone, or listen to the greeting in English, Malayalam and Arabic.</p></div>
+            <div class="voice-console"><div class="voice-console__wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="voice-console__actions"><button type="button" id="voice-listen">START LISTENING</button><button type="button" id="voice-speak">PLAY GREETING</button></div><p id="voice-status" aria-live="polite">Microphone access is requested only when you start listening.</p></div>
+          </article>
+
+          <article class="workshop-card workshop-card--memory">
+            <div class="workshop-card__heading"><span class="eyebrow">FLOATING MEMORIES</span><h3>A wall that grows.</h3><p>Add photographs to this browser's private local archive. They are not uploaded or shared with visitors.</p></div>
+            <form id="memory-form" class="memory-form">
+              <label>PHOTO<input name="photo" type="file" accept="image/*" required /></label>
+              <label>CAPTION<input name="caption" type="text" maxlength="80" placeholder="A moment worth keeping" required /></label>
+              <button type="submit">PIN TO THE WALL</button><p id="memory-status" aria-live="polite">Stored on this device using IndexedDB.</p>
+            </form>
+            <div id="memory-wall" class="memory-wall" aria-live="polite"><p class="memory-empty">Your first memory will appear here.</p></div>
+          </article>
+
+          <article class="workshop-card workshop-card--tennis">
+            <div class="workshop-card__heading"><span class="eyebrow">TABLE TENNIS / MINI GAME</span><h3>Start a rally.</h3><p>Move your paddle with the pointer or touch. Keep the ball in play and beat the return.</p></div>
+            <div class="rally-score"><span>YOU <b id="rally-player-score">0</b></span><span>RALLY <b id="rally-count">0</b></span><span>CPU <b id="rally-cpu-score">0</b></span></div>
+            <canvas id="rally-canvas" width="720" height="360" aria-label="Table tennis game. Move the pointer up and down to control your paddle."></canvas>
+            <div class="rally-actions"><button type="button" id="rally-start">START / SERVE</button><button type="button" id="rally-reset">RESET</button><span id="rally-status" aria-live="polite">Move the paddle, then serve.</span></div>
+          </article>
+
+          <article class="workshop-card workshop-card--card">
+            <div class="workshop-card__heading"><span class="eyebrow">POCKET-SIZED INTRODUCTION</span><h3>A card to keep.</h3><p>Flip the card, save the contact file, or download the artwork.</p></div>
+            <button class="af-business-card" id="af-business-card" type="button" aria-pressed="false">
+              <span class="af-card-inner"><span class="af-card-face af-card-front"><span class="af-card-mark">AF / VEETTILAYIL</span><strong>Mohamed Afnnan</strong><small>EIE UNDERGRADUATE · FISAT</small><span>afnnan.dev@gmail.com</span><span>KERALA, INDIA</span></span><span class="af-card-face af-card-back"><span>ENGINEERING / COMMUNICATION</span><strong>Understand systems.<br />Build what helps.</strong><small>linkedin.com/in/mohamedafnnan</small><span>TURN TO RETURN</span></span></span>
+            </button>
+            <div class="card-actions"><button type="button" id="download-card">DOWNLOAD CARD</button><button type="button" id="download-vcard">SAVE CONTACT (.VCF)</button></div>
+          </article>
+
+          <article class="workshop-card workshop-card--guestbook">
+            <div class="workshop-card__heading"><span class="eyebrow">VISITOR NOTES</span><h3>Leave a note.</h3><p>A shared guestbook powered by this repository's public GitHub issue comments. Posting requires a GitHub account.</p></div>
+            <div id="guestbook-list" class="guestbook-list" aria-live="polite"><p>Loading visitor notes…</p></div>
+            <a class="guestbook-sign" href="https://github.com/mohamedafnnan/afnnan-portfolio/issues/3#new_comment_field" target="_blank" rel="noopener noreferrer">SIGN THE GUESTBOOK <span aria-hidden="true">↗</span></a>
+            <p class="guestbook-note">Notes are public and moderated through GitHub. Do not post private information.</p>
+          </article>
+        </div>
+        <div class="project-exploded">
+          <div><p class="eyebrow">PROJECT DISASSEMBLY</p><h3>Look inside the build.</h3><p>Open a project to see its moving parts, the tools involved and where the work sits.</p></div>
+          <div class="project-exploded__list">
+            <details><summary><span>01</span> DAWN / Rover field</summary><div><p>Three.js renders the field and rover; Rapier provides the physics layer. The repository includes terrain, scene, input, camera, HUD, mission and rover modules. The detailed rover models are optional, with a procedural startup path.</p><span>THREE.JS · RAPIER · GLB · INPUT / HUD</span></div></details>
+            <details><summary><span>02</span> METRON / Publication system</summary><div><p>A print-oriented HTML/CSS layout, reusable page furniture, typography rules and a 17-page PDF edition. The archive links to the supplied publication.</p><span>HTML · CSS · PRINT LAYOUT · EDITORIAL</span></div></details>
+            <details><summary><span>03</span> Navodhayam / Helpdesk</summary><div><p>A student-led KEAM information initiative combining cutoff-rank references with department contacts and volunteer guidance. The project page identifies the team and its stated scope.</p><span>INFORMATION DESIGN · STUDENT NETWORK</span></div></details>
+          </div>
+        </div>
+        <div class="hidden-channel"><span>There is more than one way to navigate.</span><p id="easter-message" role="status" aria-live="polite">Try typing <kbd>afnnan</kbd>, <kbd>dawn</kbd> or <kbd>rose</kbd>.</p></div>
+      </section>
+
+      <div class="af-magnetic-cursor" aria-hidden="true"></div>
       <section class="contact-section" id="contact" aria-labelledby="contact-title">
         <div class="contact-section__grid" aria-hidden="true"></div>
         <div class="contact-section__content" data-reveal><p class="eyebrow">09 / OPEN CHANNEL</p><h2 id="contact-title">Have a question<br />worth <em>exploring?</em></h2><p>I’m glad to connect about instrumentation, industrial systems, security, robotics, writing, design or collaboration.</p><div class="contact-actions"><a class="button button--light" href="mailto:afnnan.dev@gmail.com">Email Mohamed <span aria-hidden="true">↗</span></a><a class="contact-link" href="https://www.linkedin.com/in/mohamedafnnan/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></div></div>
