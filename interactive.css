@@ -206,3 +206,12 @@
  .arm-control-bar button,.credential-filters button{transition:none}
 }
 .magnetic{transition:translate .18s ease-out}
+
+@media(prefers-reduced-motion:reduce){
+ .business-card-inner{transform:none!important;transition:none!important;opacity:1!important}
+ .business-card-front,.business-card-back{transition:opacity .25s ease,visibility .25s ease}
+ .business-card-front{transform:none!important;opacity:1;visibility:visible}
+ .business-card-back{transform:none!important;opacity:0;visibility:hidden}
+ .business-card-scene.is-flipped .business-card-front{opacity:0;visibility:hidden}
+ .business-card-scene.is-flipped .business-card-back{opacity:1;visibility:visible}
+}
