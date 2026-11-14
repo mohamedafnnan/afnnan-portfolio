@@ -8,7 +8,7 @@
    <div class="scada-console"><div class="scada-column">
    <a class="scada-node magnetic" href="#work"><i>01</i><span><strong>PROJECTS</strong><small>Selected work & builds</small></span></a><a class="scada-node magnetic" href="#evidence"><i>02</i><span><strong>ARCHIVE</strong><small>Certificates & evidence</small></span></a><a class="scada-node magnetic" href="#experience"><i>03</i><span><strong>EXPERIENCE</strong><small>Roles & responsibility</small></span></a></div>
    <div class="scada-arm-stage" id="arm-stage">
-    <div class="arm-stage-top"><span>6-AXIS / PLANAR DEMO</span><span class="arm-live-dot">LIVE</span></div>
+    <div class="arm-stage-top"><span>3-JOINT / PICK & PLACE DEMO</span><span class="arm-live-dot">LIVE</span></div>
     <svg class="arm-svg" viewBox="0 0 240 230" role="img" aria-label="Interactive articulated robotic arm. It moves between a pickup tray and a delivery point.">
      <defs><linearGradient id="armMetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e1eadb"/><stop offset=".5" stop-color="#91a891"/><stop offset="1" stop-color="#526e5d"/></linearGradient><linearGradient id="armPayload" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2c47d"/><stop offset="1" stop-color="#b87a45"/></linearGradient></defs>
      <path class="arm-floor-line" d="M12 215H228"/>
@@ -210,7 +210,7 @@
   armStage.addEventListener('pointerdown',e=>{if(mode==='track'){manualTarget=svgPoint(e);}});
   run?.addEventListener('click',()=>{mode='auto';paused=false;cycleStart=performance.now();track?.setAttribute('aria-pressed','false');pause?.setAttribute('aria-pressed','false');pause.textContent='PAUSE';});
   track?.addEventListener('click',()=>{mode=mode==='track'?'auto':'track';if(mode==='auto')cycleStart=performance.now();track.setAttribute('aria-pressed',String(mode==='track'));track.textContent=mode==='track'?'EXIT TRACK':'TRACK POINTER';});
-  pause?.addEventListener('click',()=>{paused=!paused;pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'RESUME':'PAUSE';});
+  pause?.addEventListener('click',()=>{paused=!paused;pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'RESUME':'PAUSE';if(state)state.textContent=paused?'PAUSED · HOLDING POSITION':mode==='track'?'MANUAL · TRACKING TARGET':'AUTO · RESUMING';});
   armStage.addEventListener('dblclick',()=>{mode='auto';paused=false;cycleStart=performance.now();});
   requestAnimationFrame(loop);
  }
@@ -307,5 +307,4 @@
   canvas.addEventListener('pointercancel',()=>{drag=null;});
   q('#tt-reset')?.addEventListener('click',reset);
  } q('#rose-trigger')?.addEventListener('click',()=>q('#rose-reveal')?.classList.toggle('is-visible'));
- q('#download-vcard')?.addEventListener('click',()=>{const v='BEGIN:VCARD\nVERSION:3.0\nFN:Mohamed Afnnan Veettilayil\nEMAIL:afnnan.dev@gmail.com\nURL:https://www.linkedin.com/in/mohamedafnnan/\nEND:VCARD';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v],{type:'text/vcard'}));a.download='Mohamed-Afnnan.vcf';a.click();URL.revokeObjectURL(a.href);});
 })();
