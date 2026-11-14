@@ -62,52 +62,137 @@
 @media(prefers-reduced-motion:reduce){.opening-intro,.opening-rose,.opening-petals,.opening-name,.opening-surname,.opening-stem,.opening-leaf,.hello-word{transition:none}}
 
 
-/* Motion pass: explicit SVG joint pivots and a reduced-motion fade variant. */
-.scada-arm,
-.arm-upper,
-.arm-grip-group{
-  transform-box:view-box;
+
+
+/* Portfolio interaction suite — stable SVG motion, tangible controls, and local-first archives. */
+.scada-arm,.arm-upper,.arm-grip-group,.arm-jaw{animation:none!important;transform-box:initial;will-change:transform}
+.scada-arm,.arm-upper,.arm-grip-group,.arm-jaw{transform-origin:0 0}
+.scada-arm-stage{position:relative;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px 10px 12px;min-width:0}
+.arm-stage-top{display:flex;justify-content:space-between;align-items:center;width:100%;color:#9eb29e;font:8px var(--mono);letter-spacing:.1em}
+.arm-live-dot{color:#b7d6b1}
+.arm-live-dot:before{content:"";display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:#b7d6b1;box-shadow:0 0 9px #b7d6b1}
+.scada-arm-stage .arm-svg{width:min(100%,260px);height:auto;overflow:visible;touch-action:pan-y}
+.arm-floor-line{stroke:#61786a;stroke-width:1;stroke-dasharray:3 5}
+.arm-tray{fill:#334c3e;stroke:#809982;stroke-width:1.5}
+.arm-tray--drop{fill:#283e32;stroke:#b7d6b1;stroke-dasharray:3 2}
+.arm-svg-label{fill:#a9bba9;font:6px var(--mono);letter-spacing:.1em}
+.arm-base-shadow{fill:#0b130f;opacity:.45}
+.arm-base{fill:url(#armMetal);stroke:#d1dfcb;stroke-width:1.6}
+.arm-segment{fill:none;stroke:#9eb79e;stroke-width:13;stroke-linecap:round}
+.arm-link-highlight{fill:none;stroke:#e1eadb;stroke-width:2.2;stroke-linecap:round;opacity:.65}
+.arm-joint{fill:#283d32;stroke:#e0eadb;stroke-width:3.5}
+.arm-wrist{fill:#b7c9b3;stroke:#f0f4e9;stroke-width:2}
+.arm-grip-palm{stroke:#dce7d7;stroke-width:4;stroke-linecap:round;fill:none}
+.arm-jaw{fill:none;stroke:#f0f4e9;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.arm-target-ring{fill:none;stroke:#d7bc86;stroke-width:1;stroke-dasharray:3 3;opacity:.9;pointer-events:none}
+.arm-pick-payload,.arm-carry-payload,.arm-drop-payload{pointer-events:none}
+.arm-control-bar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;width:100%}
+.arm-control-bar span{width:100%;text-align:center;color:#d2e1ce;font:8px var(--mono);letter-spacing:.08em;min-height:12px}
+.arm-control-bar button{padding:7px 8px;border:1px solid #5c7564;background:#1b2b23;color:#dce8d7;font:7px var(--mono);letter-spacing:.06em;cursor:pointer}
+.arm-control-bar button:hover,.arm-control-bar button[aria-pressed="true"]{background:#b7d6b1;color:#17231f;border-color:#b7d6b1}
+.scada-status{font-size:8px}
+.scada-console{align-items:stretch}
+.scada-column{min-width:0}
+.scada-node{z-index:2}
+.scada-node:after{content:"";position:absolute;right:-15px;top:50%;width:14px;border-top:1px solid #6d8a75;opacity:.55}
+.scada-column:last-child .scada-node:after{right:auto;left:-15px}
+.arm-control-bar button:focus-visible,.credential-controls button:focus-visible,.memory-add-form button:focus-visible{outline:2px solid #e3d5a5;outline-offset:3px}
+.project-disassembly{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.project-disassembly summary{cursor:pointer;color:var(--accent-dark);font:9px var(--mono);letter-spacing:.09em;list-style:none}
+.project-disassembly summary:after{content:" +";font-size:14px}
+.project-disassembly[open] summary:after{content:" −"}
+.disassembly-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:13px}
+.disassembly-part{min-width:0;padding:13px;background:#e9e7de;border:1px solid #d2d0c4;animation:part-arrive .35s ease both}
+.disassembly-part:nth-child(2){animation-delay:.06s}.disassembly-part:nth-child(3){animation-delay:.12s}
+.disassembly-part strong{font:8px var(--mono);color:var(--accent-dark)}
+.disassembly-part p{margin:8px 0 0;color:#555f55;font-size:11px;line-height:1.55}
+@keyframes part-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.credential-controls{display:grid;grid-template-columns:minmax(180px,.7fr) 1.3fr auto;align-items:end;gap:14px;margin:24px 0 15px}
+.credential-search{display:grid;gap:7px;color:var(--muted);font:8px var(--mono);letter-spacing:.1em}
+.credential-search input{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--line);background:#fffefa;color:var(--ink);font:13px var(--sans)}
+.credential-filters{display:flex;flex-wrap:wrap;gap:6px}
+.credential-filters button{padding:10px 12px;border:1px solid var(--line);background:transparent;color:var(--ink);font:8px var(--mono);letter-spacing:.06em;cursor:pointer}
+.credential-filters button[aria-pressed="true"]{background:var(--ink);color:#f4f1e8;border-color:var(--ink)}
+#credential-count{padding:10px 0;color:var(--muted);font:8px var(--mono);white-space:nowrap}
+.credential-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.credential-list>a,.credential-list__unlinked{display:grid;grid-template-columns:28px 1fr;align-items:center;gap:5px 10px;min-height:70px;padding:13px;border:1px solid #c9c9bc;background:#f7f5ed;color:var(--ink);text-decoration:none;transition:transform .2s,border-color .2s}
+.credential-list>a:hover{transform:translateY(-3px);border-color:#718c74}
+.credential-list>a span,.credential-list__unlinked span{grid-row:span 2;color:#8b9587;font:9px var(--mono)}
+.credential-list>a strong,.credential-list__unlinked strong{font-size:11px;font-weight:500}
+.credential-list>a em,.credential-list__unlinked em{color:var(--muted);font:7px var(--mono);font-style:normal}
+.credential-list [hidden]{display:none!important}
+.memory-add-form{display:grid;grid-template-columns:1.2fr 1.5fr 1fr 1fr;align-items:end;gap:10px;margin:20px 0;padding:16px;border:1px solid var(--line);background:#f0eee6}
+.memory-add-form label{display:grid;gap:7px;color:var(--muted);font:8px var(--mono);letter-spacing:.08em}
+.memory-add-form input,.memory-add-form select{width:100%;min-width:0;min-height:40px;padding:8px;border:1px solid #c9c7bb;background:#fffefa;color:var(--ink);font:12px var(--sans)}
+.memory-add-form button{min-height:40px;padding:9px 12px;border:0;background:var(--ink);color:#fff;font:8px var(--mono);letter-spacing:.06em;cursor:pointer}
+.memory-status{grid-column:1/-1;margin:0;color:var(--muted);font:9px var(--mono)}
+.memory-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.memory-card{position:relative;min-width:0;background:#fffefa;border:1px solid #d1cfc3;box-shadow:0 7px 18px #1b2a2010;transform:rotate(var(--tilt,0deg));transition:transform .25s,box-shadow .25s}
+.memory-card:nth-child(3n+1){--tilt:-1deg}.memory-card:nth-child(3n+2){--tilt:1deg}
+.memory-card:hover{transform:translateY(-5px) rotate(0);box-shadow:0 13px 25px #1b2a2020}
+.memory-card img{display:block;width:100%;height:180px;object-fit:cover;background:#e6e4da}
+.memory-card__body{padding:13px}
+.memory-card__body span{color:var(--muted);font:7px var(--mono);letter-spacing:.08em}
+.memory-card__body h4{margin:7px 0 10px;font-size:15px;font-weight:500}
+.memory-card__body button{padding:6px 8px;border:1px solid #d1cfc3;background:transparent;color:#7a504a;font:7px var(--mono);cursor:pointer}
+.memory-slot{min-height:130px}
+.business-card-scene{height:190px;margin:18px 0 12px;perspective:900px;cursor:pointer;outline-offset:4px}
+.business-card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.2,.75,.25,1)}
+.business-card-scene.is-flipped .business-card-inner{transform:rotateY(180deg)}
+.business-card-face{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:22px 25px;border:1px solid #657b68;border-radius:5px;backface-visibility:hidden;overflow:hidden}
+.business-card-front{background:#17231f;color:#f4f1e8}
+.business-card-front:after{content:"";position:absolute;width:230px;height:230px;right:-70px;top:-90px;border:1px solid #b7d6b144;border-radius:50%;box-shadow:0 0 0 22px #b7d6b11a,0 0 0 45px #b7d6b10d}
+.bc-monogram{color:#b7d6b1;font:14px var(--mono);letter-spacing:.15em}
+.bc-monogram span{color:#e2bd83}
+.business-card-front strong{position:relative;z-index:1;margin-top:19px;font-size:clamp(18px,2.5vw,27px);letter-spacing:-.04em}
+.business-card-front small{position:relative;z-index:1;margin-top:3px;color:#b7d6b1;font:8px var(--mono);letter-spacing:.2em}
+.business-card-front i,.business-card-front em{position:relative;z-index:1;margin-top:15px;color:#d5dfd0;font:8px var(--mono);font-style:normal;letter-spacing:.1em}
+.business-card-front em{margin-top:5px;color:#91a18e}
+.business-card-back{gap:10px;background:#e5e8dc;color:#17231f;transform:rotateY(180deg)}
+.business-card-back span,.business-card-back i{font:8px var(--mono);letter-spacing:.13em;color:#647864}
+.business-card-back strong{max-width:300px;font-size:23px;font-weight:500;letter-spacing:-.05em}
+.business-card-back small{font-size:11px}
+.business-card-actions{display:flex;flex-wrap:wrap;gap:7px}
+.business-card-actions .card-download{margin:0;font-size:8px}
+.magnetic{translate:var(--mag-x,0px) var(--mag-y,0px)}
+#easter-egg{opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
+#easter-egg.is-visible{opacity:1;transform:translateY(0)}
+@media(max-width:760px){
+ .scada-console{grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+ .scada-arm-stage{grid-column:1/-1;grid-row:1;min-height:260px;border:0;border-bottom:1px solid #506359}
+ .scada-arm-stage .arm-svg{width:min(100%,245px)}
+ .arm-control-bar{max-width:390px;margin:auto}
+ .scada-column{gap:8px}
+ .scada-node:after{display:none}
+ .disassembly-grid{grid-template-columns:1fr}
+ .credential-controls{grid-template-columns:1fr}
+ .credential-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .memory-add-form{grid-template-columns:1fr 1fr}
+ .memory-wall{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .memory-card img{height:150px}
 }
-.scada-arm{
-  transform-origin:50% 82.6087%;
-  animation:arm-base-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
-}
-.arm-upper{
-  transform-origin:50% 64.3478%;
-  animation:arm-elbow-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
-}
-.arm-grip-group{
-  transform-origin:73.75% 39.5652%;
-  animation:arm-wrist-cycle 7.2s cubic-bezier(.45,0,.55,1) infinite;
-}
-@keyframes arm-base-cycle{
-  0%,100%{transform:rotate(-15deg)}
-  50%{transform:rotate(15deg)}
-}
-@keyframes arm-elbow-cycle{
-  0%,100%{transform:rotate(13deg)}
-  50%{transform:rotate(-17deg)}
-}
-@keyframes arm-wrist-cycle{
-  0%,100%{transform:rotate(-8deg)}
-  50%{transform:rotate(12deg)}
-}
-.opening-petals{
-  transform-box:view-box;
-  transform-origin:50% 42.857%;
+@media(max-width:440px){
+ .credential-list,.memory-wall{grid-template-columns:1fr}
+ .memory-add-form{grid-template-columns:1fr}
+ .business-card-scene{height:180px}
+ .arm-control-bar button{font-size:6px;padding:7px 6px}
 }
 @media(prefers-reduced-motion:reduce){
-  /* Keep the greeting legible with gentle fades instead of large movement. */
-  .opening-rose,.opening-name{transform:none;transition:opacity .35s ease}
-  .opening-petals{transform:none;opacity:.2;transition:opacity .35s ease}
-  .opening-reveal .opening-petals{transform:none;opacity:1}
-  .opening-stem,.opening-leaf,.opening-surname{transition:opacity .3s ease}
-  .hello-word{transform:none;transition:opacity .15s ease}
-  /* A smaller, slower arm cycle remains visible without a wide sweep. */
-  .scada-arm{animation:arm-base-reduced 14s ease-in-out infinite}
-  .arm-upper{animation:arm-elbow-reduced 14s ease-in-out infinite}
-  .arm-grip-group{animation:arm-wrist-reduced 14s ease-in-out infinite}
+ .opening-intro,.opening-rose,.opening-petals,.opening-name,.opening-surname,.opening-stem,.opening-leaf,.hello-word{transition:opacity .35s ease}
+ .opening-intro .opening-name{transform:none!important}
+ .opening-intro .opening-surname{transform:none!important}
+ .scada-arm,.arm-upper,.arm-grip-group,.arm-jaw{animation:none!important}
+ .arm-target-ring{opacity:.45}
+ .business-card-inner{transition:opacity .25s ease}
+ .business-card-scene.is-flipped .business-card-inner{transform:none;opacity:.45}
+ .memory-card,.credential-list>a{transition:none}
+ .disassembly-part{animation:none}
 }
-@keyframes arm-base-reduced{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
-@keyframes arm-elbow-reduced{0%,100%{transform:rotate(2deg)}50%{transform:rotate(-2deg)}}
-@keyframes arm-wrist-reduced{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+
+/* Explicitly staged intro: the rose and identity appear after the greeting sequence. */
+.opening-intro .opening-name{opacity:0!important;transform:translateY(14px)!important}
+.opening-intro.opening-name-reveal .opening-name{opacity:1!important;transform:translateY(0)!important}
+.opening-intro .opening-surname{opacity:0!important}
+.opening-intro.opening-surname-reveal .opening-surname{opacity:1!important}
+.opening-intro .opening-petals{transform:scale(.08) rotate(-25deg)}
+.opening-intro.opening-reveal .opening-petals{transform:scale(1) rotate(0)}
