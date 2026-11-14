@@ -2,8 +2,8 @@
 
 export const WORLD = {
   radius: 150,            // compact playable radius for practical rover exploration
-  terrainSize: 360,       // compact mesh with enough horizon around the playable area
-  terrainSegments: 180,   // resolution
+  terrainSize: 520,       // continuous ground beneath the expanded geology and playable field
+  terrainSegments: 260,   // keep approximately 2 m terrain sampling across the expanded mesh
   coordinateScale: 0.62,  // keeps terrain features and POIs in the same compact world
   gravity: -9.81 * 1.4,
   fogNear: 105,

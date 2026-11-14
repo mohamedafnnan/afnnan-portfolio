@@ -27,8 +27,8 @@ export class PhysicsWorld {
 
   _buildHeightfield() {
     // Rapier's heightfield: rows x cols, sampled on unit grid.
-    const nrows = 160;
-    const ncols = 160;
+    const nrows = 220;
+    const ncols = 220;
     const size = WORLD.terrainSize;
     const scale = { x: size, y: 1, z: size };
     const heights = new Float32Array(nrows * ncols);

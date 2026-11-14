@@ -87,7 +87,7 @@ function makeSandTexture() {
   for (let i = 0; i < size * size; i++) {
     const n = (hash(i % size, Math.floor(i / size)) * 0.4 + hash((i * 3) % size, Math.floor(i / (size * 2))) * 0.6);
     const v = 140 + Math.floor(n * 90);
-    const r = v + Math.floor((Math.random() - 0.5) * 12);
+    const r = v + Math.floor((hash(i % size + 17, Math.floor(i / size) + 31) - 0.5) * 12);
     const g = Math.floor(r * 0.66);
     const b = Math.floor(r * 0.42);
     const p = i * 4;
@@ -102,7 +102,7 @@ function makeSandTexture() {
 
 export function buildTerrain(scene) {
   const lowPower = window.matchMedia('(max-width: 720px)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const segments = lowPower ? 140 : WORLD.terrainSegments;
+  const segments = lowPower ? 180 : WORLD.terrainSegments;
   const geom = new PlaneGeometry(WORLD.terrainSize, WORLD.terrainSize, segments, segments);
   geom.rotateX(-Math.PI / 2);
   const pos = geom.attributes.position;
