@@ -18,6 +18,20 @@ The main portfolio covers selected work such as DAWN, METRON Vol. IX, Instrument
 
 DAWN is a self-contained Three.js and Rapier interactive portfolio field. It presents engineering interests, publication design, evidence, and independent learning as an explorable environment rather than a flat list of projects.
 
+## Interactive portfolio
+
+The main page now includes an interactive control-room and workshop layer:
+
+- A simulated SCADA panel with instrument readings, pump/valve toggles and an event log. It is a local demonstration only; it is not connected to a PLC, plant or live equipment.
+- A two-link robotic-arm pick-and-place animation with automatic cycle, pause and pointer-tracking modes.
+- A searchable certificate museum using the evidence files already in the repository.
+- A bookshelf that navigates to portfolio sections, a local IndexedDB memory wall, a playable pointer/touch table-tennis rally, and a downloadable SVG business card and vCard.
+- A voice-enabled intro and optional speech-recognition greeting. Browser support and microphone permission vary.
+- A public guestbook backed by GitHub issue #3. Visitors can read public comments on the site and sign through GitHub; posting requires a GitHub account. Do not post private information.
+- Project disassembly panels, a magnetic cursor on pointer devices, and keyboard/tap Easter eggs.
+
+The memory wall is intentionally local to each visitor's browser. It does not upload photos or create a shared gallery. The guestbook uses GitHub Issues because GitHub Pages is static and has no server-side database.
+
 ## DAWN runtime
 
 DAWN uses:
