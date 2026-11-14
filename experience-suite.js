@@ -82,14 +82,14 @@
     const payload = $('#robot-payload'), target = $('#robot-target'), stage = $('.robot-stage');
     const status = $('#arm-status'), run = $('#arm-run'), pause = $('#arm-pause'), track = $('#arm-track');
     const waypoints = [
-      { t: 0, shoulder: -4, elbow: 0, x: 99, y: 232, grip: 0, label: 'HOME · READY' },
-      { t: 1.1, shoulder: -38, elbow: 24, x: 99, y: 232, grip: 0, label: 'REACH · INPUT TRAY' },
-      { t: 1.55, shoulder: -38, elbow: 24, x: 99, y: 232, grip: 1, label: 'GRIP · PAYLOAD SECURED' },
-      { t: 3.1, shoulder: 8, elbow: -22, x: 260, y: 160, grip: 1, label: 'TRANSFER · IN MOTION' },
-      { t: 4.5, shoulder: 38, elbow: -18, x: 421, y: 232, grip: 1, label: 'ALIGN · OUTPUT TRAY' },
-      { t: 4.9, shoulder: 38, elbow: -18, x: 421, y: 232, grip: 0, label: 'RELEASE · COMPLETE' },
-      { t: 6.2, shoulder: -4, elbow: 0, x: 421, y: 232, grip: 0, label: 'RETURN · HOME' },
-      { t: 7.0, shoulder: -4, elbow: 0, x: 421, y: 232, grip: 0, label: 'CYCLE COMPLETE' }
+      { t: 0, shoulder: 0, elbow: 0, grip: false, label: 'HOME · CENTERED' },
+      { t: 1.1, shoulder: -78, elbow: 10, grip: false, label: 'REACH · INPUT TRAY' },
+      { t: 1.5, shoulder: -78, elbow: 10, grip: true, label: 'GRIP · PAYLOAD SECURED' },
+      { t: 3.2, shoulder: 0, elbow: -4, grip: true, label: 'TRANSFER · CENTER LINE' },
+      { t: 4.6, shoulder: 78, elbow: 10, grip: true, label: 'ALIGN · OUTPUT TRAY' },
+      { t: 5.0, shoulder: 78, elbow: 10, grip: false, label: 'RELEASE · COMPLETE' },
+      { t: 6.3, shoulder: 0, elbow: 0, grip: false, label: 'RETURN · CENTERED' },
+      { t: 7.0, shoulder: 0, elbow: 0, grip: false, label: 'CYCLE COMPLETE' }
     ];
     let mode = 'auto', paused = false, start = performance.now(), elapsedOffset = 0, pointer = { x: 260, y: 110 };
     const mix = (a,b,t) => a + (b-a)*t;
@@ -97,18 +97,39 @@
     const interpolate = seconds => {
       let i = 0; while (i < waypoints.length-2 && seconds > waypoints[i+1].t) i++;
       const a = waypoints[i], b = waypoints[i+1], u = ease(Math.max(0, Math.min(1,(seconds-a.t)/(b.t-a.t))));
-      return { shoulder: mix(a.shoulder,b.shoulder,u), elbow: mix(a.elbow,b.elbow,u), x: mix(a.x,b.x,u), y: mix(a.y,b.y,u), grip: seconds >= 1.55 && seconds < 4.9, label: b.label };
+      return { shoulder: mix(a.shoulder,b.shoulder,u), elbow: mix(a.elbow,b.elbow,u), grip: seconds >= 1.5 && seconds < 5.0, label: b.label };
+    };
+    const endpoint = pose => {
+      const a = pose.shoulder * Math.PI / 180, b = (pose.shoulder + pose.elbow) * Math.PI / 180;
+      const elbowX = 260 + 93 * Math.sin(a), elbowY = 244 - 93 * Math.cos(a);
+      return { x: elbowX + 69 * Math.sin(b), y: elbowY - 69 * Math.cos(b) };
     };
     const paint = pose => {
       upper?.setAttribute('transform', 'rotate(' + pose.shoulder + ' 260 244)');
       lower?.setAttribute('transform', 'rotate(' + pose.elbow + ' 260 151)');
-      grip?.setAttribute('transform', 'rotate(' + (pose.grip ? 0 : 0) + ' 260 82)');
-      $('#robot-jaw-left')?.setAttribute('d', pose.grip ? 'M260 64 L249 50' : 'M260 64 L241 42');
-      $('#robot-jaw-right')?.setAttribute('d', pose.grip ? 'M260 64 L271 50' : 'M260 64 L279 42');
-      if (payload) { payload.setAttribute('cx', pose.x); payload.setAttribute('cy', pose.y); payload.style.opacity = pose.grip ? '0' : '1'; }
-      if (target) { target.setAttribute('cx', pose.x); target.setAttribute('cy', Math.max(60, pose.y-72)); }
+      const tip = endpoint(pose);
+      if (payload) {
+        const atInput = { x: 99, y: 232 }, atOutput = { x: 421, y: 232 };
+        const held = pose.grip;
+        const released = pose.shoulder > 55 && !pose.grip;
+        const position = held ? tip : released ? atOutput : atInput;
+        payload.setAttribute('cx', position.x);
+        payload.setAttribute('cy', position.y + (held ? 12 : 0));
+        payload.style.opacity = '1';
+      }
+      if (target) { target.setAttribute('cx', tip.x); target.setAttribute('cy', tip.y); }
       if (status) status.textContent = mode === 'track' ? 'MANUAL · POINTER TRACKING' : paused ? 'PAUSED · HOLDING POSITION' : pose.label;
     };
+    const reset = () => { mode='auto';paused=false;elapsedOffset=0;start=performance.now();track.setAttribute('aria-pressed','false');track.textContent='TRACK POINTER';pause.setAttribute('aria-pressed','false');pause.textContent='PAUSE';stage?.classList.remove('is-tracking'); };
+    run?.addEventListener('click', reset);
+    pause?.addEventListener('click', () => {
+      if (!paused) { elapsedOffset = ((performance.now()-start)/1000 + elapsedOffset) % 7; paused=true; }
+      else { start=performance.now(); paused=false; }
+      pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'RESUME':'PAUSE';
+      if(status)status.textContent=paused?'PAUSED · HOLDING POSITION':'AUTO · RESUMING';
+    });
+    track?.addEventListener('click', () => { mode=mode==='track'?'auto':'track';track.setAttribute('aria-pressed',String(mode==='track'));track.textContent=mode==='track'?'EXIT TRACK':'TRACK POINTER';stage?.classList.toggle('is-tracking',mode==='track');if(mode==='auto'){start=performance.now();elapsedOffset=0;} });
+    stage?.addEventListener('pointermove', event => { if(mode!=='track')return;const rect=arm.getBoundingClientRect();pointer={x:Math.max(70,Math.min(450,(event.clientX-rect.left)/rect.width*520)),y:Math.max(45,Math.min(235,(event.clientY-rect.top)/rect.height*330))}; });
     const loop = now => {
       if (!paused) {
         if (mode === 'auto') {
@@ -116,8 +137,8 @@
           paint(interpolate(elapsed));
         } else {
           const dx = pointer.x - 260, dy = pointer.y - 244;
-          const shoulder = Math.max(-65, Math.min(65, Math.atan2(dx, -dy) * 180 / Math.PI));
-          paint({ shoulder, elbow: Math.max(-55, Math.min(55, (Math.hypot(dx,dy)-100)*.5)), x: pointer.x, y: pointer.y, grip: false, label: 'MANUAL' });
+          const shoulder = Math.max(-78, Math.min(78, Math.atan2(dx, -dy) * 180 / Math.PI));
+          paint({ shoulder, elbow: Math.max(-12, Math.min(18, (Math.hypot(dx,dy)-140)*.12)), grip: false, label: 'MANUAL' });
         }
       }
       requestAnimationFrame(loop);
