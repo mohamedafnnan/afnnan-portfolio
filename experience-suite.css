@@ -78,3 +78,10 @@
 .museum-count{padding:10px 0;color:#7a8177;font:8px var(--mono);white-space:nowrap}
 @media(max-width:760px){.museum-controls{grid-template-columns:1fr}.museum-count{padding:0}}
 @media(prefers-reduced-motion:reduce){.museum-filters button{transition:none}}
+
+.opening-actions{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px}
+.opening-actions .opening-skip{margin-top:0}
+.opening-voice{padding:9px 13px;border:1px solid #6c816e;background:#1b2924;color:#f4f1e8;font:9px var(--mono);letter-spacing:.1em;cursor:pointer}
+.opening-voice:disabled{opacity:.5;cursor:not-allowed}
+.opening-voice:focus-visible,.opening-skip:focus-visible{outline:2px solid #a66d4b;outline-offset:3px}
+@media(max-width:380px){.opening-actions{flex-direction:column}.opening-actions button{width:100%}}
