@@ -56,7 +56,6 @@
  if(opening){
   const hello=q('.hello-word',opening);
   const greetings=['HELLO','നമസ്കാരം','السلام عليكم'];
-  const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   greetings.forEach((word,index)=>{
    if(index===0)return;
    setTimeout(()=>{
@@ -71,8 +70,9 @@
     }
    },index*650);
   });
-  const revealAt=reducedMotion?100:2100;
-  const finishAt=reducedMotion?700:4400;
+  // Reduced-motion preferences remove CSS movement, not the greeting sequence.
+  const revealAt=2200;
+  const finishAt=5600;
   setTimeout(()=>opening.classList.add('opening-reveal'),revealAt);
   const dismiss=()=>{
    if(opening.classList.contains('opening-exit'))return;
