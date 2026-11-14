@@ -221,3 +221,166 @@
 .memory-card:nth-child(2){--float-index:1}.memory-card:nth-child(3){--float-index:2}.memory-card:nth-child(4){--float-index:3}
 @keyframes memory-float{0%,100%{translate:0 0}50%{translate:0 -6px}}
 @media(prefers-reduced-motion:reduce){.memory-card{animation:none!important;translate:none!important}}
+
+
+/* Refined interaction layer — one visual system, editorial spacing, deliberate motion. */
+:root{
+ --ui-ink:#1b2924;--ui-paper:#f4f1e8;--ui-card:#fbfaf5;--ui-muted:#69736a;
+ --ui-line:#d5d2c7;--ui-green:#b7d6b1;--ui-deep:#14221c;--ui-orange:#c76a43;
+}
+.scada-section{
+ width:calc(100% - 2 * clamp(22px,5vw,78px));max-width:1164px;
+ margin:clamp(72px,9vw,126px) auto;padding:clamp(28px,4vw,58px);
+ border:1px solid #31453a;background:
+ radial-gradient(ellipse at 50% 8%,#2b4436 0%,transparent 45%),
+ linear-gradient(145deg,#192920,#101a15);
+ box-shadow:0 24px 70px #18251e18;
+}
+.scada-head{align-items:end;margin-bottom:36px}
+.scada-head h2{margin:0;font-size:clamp(34px,5.5vw,68px);letter-spacing:-.075em;line-height:.94}
+.scada-head p{max-width:360px;margin:0;color:#c0cbbf;font-size:13px}
+.scada-console{
+ min-height:430px;padding:clamp(14px,2vw,24px);gap:clamp(10px,2vw,24px);
+ border:1px solid #607566;background:
+ linear-gradient(#a8c7a70b 1px,transparent 1px),
+ linear-gradient(90deg,#a8c7a70b 1px,transparent 1px),
+ linear-gradient(135deg,#1d3025,#101a15);
+ background-size:24px 24px,24px 24px,auto;
+}
+.scada-column{gap:12px}
+.scada-node{
+ min-height:82px;padding:14px 13px;border-color:#4b6454;background:#1a2b21;
+ box-shadow:0 8px 18px #08110b24;
+}
+.scada-node i{flex:0 0 34px;width:34px;height:34px;border-color:#78927b;color:#d4e4cd}
+.scada-node strong{font-size:10px;letter-spacing:.11em}
+.scada-node small{font-size:10px;line-height:1.4}
+.scada-node:after{opacity:.8;border-color:#90aa8e}
+.scada-arm-stage{min-height:350px;padding:18px 12px;border-color:#4b6454}
+.scada-arm-stage .arm-svg{width:min(100%,290px);max-height:260px}
+.arm-stage-top{font-size:9px}
+.arm-control-bar{gap:8px}
+.arm-control-bar button{padding:9px 11px;font-size:8px;letter-spacing:.08em}
+.arm-control-bar button:first-of-type{background:#b7d6b1;color:#14221c;border-color:#b7d6b1}
+.arm-control-bar button:first-of-type:hover{background:#d9e7d2}
+.scada-status{margin-top:18px;padding-top:14px;border-top:1px solid #455c4b;font-size:8px}
+.scada-section>.card-download{margin-top:18px;border:1px solid #708873;background:transparent;color:#dce8d7}
+.scada-section>.card-download:hover{background:#b7d6b1;color:#14221c}
+.creative-grid{
+ max-width:1164px;padding:clamp(22px,3vw,38px) clamp(22px,5vw,78px);
+ gap:18px;align-items:stretch;
+}
+.creative-card{
+ position:relative;min-width:0;padding:clamp(22px,3vw,34px);
+ border:1px solid var(--ui-line);background:var(--ui-card);
+ box-shadow:0 8px 24px #18251e08;
+ transition:border-color .25s,box-shadow .25s,transform .25s;
+}
+.creative-card:hover{border-color:#aeb8a8;box-shadow:0 15px 34px #18251e10}
+.creative-card--wide{grid-column:1/-1}
+.creative-kicker{display:block;margin-bottom:14px;color:#9a5639;font-size:9px;letter-spacing:.14em}
+.creative-card h3{margin:0 0 12px;font-size:clamp(24px,3vw,36px);line-height:1.05;letter-spacing:-.06em}
+.creative-card>p{max-width:680px;font-size:13px}
+.tt-stage{margin-top:20px;border:1px solid #53675b;box-shadow:inset 0 0 30px #0002}
+.tt-stage canvas{height:270px}
+.tt-help{align-items:center;padding-top:4px;font-size:8px;letter-spacing:.08em}
+.tt-help button,.business-card-actions button,.card-download{
+ min-height:38px;padding:10px 13px;border:1px solid var(--ui-ink);
+ background:var(--ui-ink);color:#f7f5ed;font:8px var(--mono);letter-spacing:.09em;
+ cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .2s;
+}
+.tt-help button:hover,.business-card-actions button:hover,.card-download:hover{background:#dce6d6;color:var(--ui-ink);border-color:#8ea38b}
+.business-card-scene{height:220px;margin:22px 0 15px}
+.business-card-face{padding:clamp(22px,4vw,34px)}
+.business-card-front strong{font-size:clamp(20px,3vw,30px)}
+.business-card-actions{gap:8px}
+.business-card-actions .card-download{margin:0}
+.memory-add-form{
+ grid-template-columns:1fr 1.4fr .9fr 1fr auto;gap:12px;
+ padding:18px;border:1px solid #d5d2c7;background:#f0eee6;
+}
+.memory-add-form label{font-size:8px}
+.memory-add-form input,.memory-add-form select{min-height:42px}
+.memory-add-form button{min-height:42px;padding:10px 14px;background:#1b2924;font-size:8px}
+.memory-status{font-size:9px;line-height:1.5}
+.memory-wall{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.memory-card{border:1px solid #d4d0c3;box-shadow:0 10px 25px #18251e12}
+.memory-card img{height:210px}
+.memory-card__body{padding:15px}
+.memory-card__body span{font-size:8px;letter-spacing:.1em}
+.memory-card__body h4{font-size:16px;line-height:1.25}
+.memory-card__body button{padding:7px 9px}
+.guestbook-form{gap:14px;margin-top:24px}
+.guestbook-form label{font-size:8px}
+.guestbook-form input,.guestbook-form textarea{min-height:44px;padding:13px;border:1px solid #d2d0c5;background:#fffefa}
+.guestbook-form textarea{min-height:130px}
+.guestbook-form button{min-height:42px;padding:12px 17px;background:#1b2924;font-size:8px;letter-spacing:.1em}
+.guestbook-note{margin-top:14px;color:#74786f!important;font-size:10px!important;line-height:1.6}
+.book-shelf{
+ gap:12px;padding:30px 14px 20px;border:1px solid #d1c9b8;
+ border-bottom:12px solid #72563f;
+ background:linear-gradient(180deg,#ece9df 0 92%,#8d7155 92% 100%);
+}
+.shelf-book{flex-basis:130px;min-height:195px;padding:17px 14px 20px;box-shadow:3px 7px 0 #5b4937}
+.shelf-book b{font-size:21px}
+.credential-controls{margin:28px 0 18px;gap:16px}
+.credential-search input{min-height:44px;border-color:#d1cfc3}
+.credential-filters button{padding:11px 13px;font-size:8px}
+.credential-list{gap:10px}
+.credential-list>a,.credential-list__unlinked{min-height:78px;padding:14px;border-color:#d4d1c5;background:#fbfaf5}
+.project-disassembly{margin-top:22px;padding-top:18px}
+.project-disassembly summary{font-size:9px;letter-spacing:.12em}
+.disassembly-grid{gap:10px}
+.disassembly-part{padding:16px;background:#f0eee6;border-color:#dedbd0}
+.disassembly-part p{font-size:12px;line-height:1.65}
+.magnetic-cursor{mix-blend-mode:multiply;border-color:#c76a43}
+.magnetic{transition:translate .2s cubic-bezier(.2,.7,.2,1)}
+#easter-egg{border:1px solid #8fa38f;box-shadow:0 12px 30px #101a1540;font-size:10px!important;letter-spacing:.06em}
+@media(max-width:900px){
+ .scada-console{grid-template-columns:minmax(0,1fr) minmax(180px,.95fr) minmax(0,1fr)}
+ .scada-node{padding:11px 9px}
+ .scada-node small{font-size:9px}
+ .memory-add-form{grid-template-columns:1fr 1fr}
+ .memory-add-form button{grid-column:1/-1;justify-self:start}
+}
+@media(max-width:760px){
+ .scada-section{width:calc(100% - 28px);margin:64px auto;padding:25px 18px}
+ .scada-head{display:block;margin-bottom:24px}
+ .scada-head p{margin-top:17px}
+ .scada-console{grid-template-columns:1fr 1fr;min-height:0;padding:12px}
+ .scada-arm-stage{grid-column:1/-1;grid-row:1;min-height:300px;padding:15px 8px}
+ .scada-arm-stage .arm-svg{width:min(100%,250px)}
+ .scada-column{gap:9px}
+ .scada-node{min-height:72px}
+ .scada-node:after{display:none}
+ .scada-status{flex-wrap:wrap;font-size:7px}
+ .creative-grid{padding:22px 14px;gap:12px}
+ .creative-card{padding:22px}
+ .memory-add-form{grid-template-columns:1fr 1fr}
+ .memory-wall{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .memory-card img{height:175px}
+}
+@media(max-width:480px){
+ .scada-section{width:calc(100% - 20px);padding:22px 13px}
+ .scada-console{gap:8px;padding:9px}
+ .scada-node{gap:8px;min-height:66px;padding:9px 7px}
+ .scada-node i{width:27px;height:27px;flex-basis:27px;font-size:10px}
+ .scada-node strong{font-size:8px}
+ .scada-node small{font-size:8px}
+ .arm-control-bar button{font-size:7px;padding:8px 7px}
+ .scada-status span:last-child{display:none}
+ .creative-grid{padding:16px 10px}
+ .creative-card{padding:19px}
+ .memory-add-form,.memory-wall{grid-template-columns:1fr}
+ .memory-add-form button{grid-column:auto}
+ .memory-card img{height:220px}
+ .business-card-scene{height:190px}
+ .business-card-actions .card-download{flex:1 1 100%;justify-content:center}
+ .credential-list{grid-template-columns:1fr}
+ .tt-stage canvas{height:235px}
+}
+@media(prefers-reduced-motion:reduce){
+ .creative-card,.scada-node,.memory-card,.shelf-book,.business-card-inner{transition:none!important}
+ .memory-card{animation:none!important}
+ .scada-arm,.arm-upper,.arm-grip-group,.arm-jaw{animation:none!important}
+}
