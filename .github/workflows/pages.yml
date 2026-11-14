@@ -1,0 +1,93 @@
+name: Deploy portfolio to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Prepare static site for the repository URL
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+          import shutil
+
+          root = Path.cwd()
+          output = root / "_site"
+          ignored = {".git", ".github", "_site", "node_modules", ".netlify"}
+          if output.exists():
+              shutil.rmtree(output)
+
+          def ignore(directory, names):
+              return [name for name in names if name in ignored or name.startswith(".DS_Store")]
+
+          shutil.copytree(root, output, ignore=ignore)
+
+          # GitHub project sites live below /<repository>/, unlike the old
+          # Netlify root domain. Prefix the site's root-relative asset/routes.
+          base = "/afnnan-portfolio"
+          prefixes = (
+              "assets/", "dawn/", "portfolio-fonts.css", "portfolio.css",
+              "interactive.css", "portfolio.js", "interactive.js",
+              "manifest.webmanifest", "sw.js", "robots.txt", "sitemap.xml"
+          )
+          pattern = re.compile(r'(?<![A-Za-z0-9_:.])/(?:' + "|".join(re.escape(p) for p in prefixes) + r')')
+
+          text_extensions = {
+              ".html", ".css", ".js", ".json", ".webmanifest", ".xml",
+              ".txt", ".md", ".webmanifest"
+          }
+          for path in output.rglob("*"):
+              if not path.is_file() or path.suffix.lower() not in text_extensions:
+                  continue
+              try:
+                  content = path.read_text(encoding="utf-8")
+              except UnicodeDecodeError:
+                  continue
+              content = pattern.sub(lambda match: base + match.group(0), content)
+              content = content.replace('href="/"', f'href="{base}/"')
+              content = content.replace('href="/?', f'href="{base}/?')
+              content = content.replace('action="/?', f'action="{base}/?')
+              content = content.replace('"start_url": "/dawn/', f'"start_url": "{base}/dawn/')
+              content = content.replace('"scope": "/"', f'"scope": "{base}/"')
+              path.write_text(content, encoding="utf-8")
+
+          (output / ".nojekyll").write_text("", encoding="utf-8")
+          print(f"Prepared {output} for {base}/")
+          PY
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
