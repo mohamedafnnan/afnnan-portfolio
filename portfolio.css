@@ -647,3 +647,5 @@ body {
   }
   .hero__visual:hover .hero__image { transform: none; }
 }
+
+.guestbook-form[hidden] { display: none !important; }
