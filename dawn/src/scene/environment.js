@@ -41,14 +41,15 @@ function placeInstance(mesh, index, x, z, y, scale, rng, tilt = 0.35) {
 export function buildRocks(scene) {
   const rng = seeded(0xAF11A1); // stable layout across reloads
   const lowPower = window.matchMedia('(max-width: 720px)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const count = lowPower ? 340 : 620;
+  const count = lowPower ? 420 : 760;
   const a = new IcosahedronGeometry(1, 1); a.scale(1, 0.72, 0.9);
   const b = new DodecahedronGeometry(1, 0); b.scale(1, 0.78, 0.82);
   const c = new IcosahedronGeometry(1, 0); c.scale(1.25, 0.55, 0.72);
+  const perMesh = Math.ceil(count / 3);
   const meshes = [
-    new InstancedMesh(a, sharedMaterials.rockDark, lowPower ? 145 : 260),
-    new InstancedMesh(b, sharedMaterials.rockLight, lowPower ? 120 : 220),
-    new InstancedMesh(c, sharedMaterials.rockGrey, lowPower ? 75 : 140),
+    new InstancedMesh(a, sharedMaterials.rockDark, perMesh),
+    new InstancedMesh(b, sharedMaterials.rockLight, perMesh),
+    new InstancedMesh(c, sharedMaterials.rockGrey, perMesh),
   ];
   meshes.forEach((m) => { m.castShadow = true; m.receiveShadow = true; scene.add(m); });
   // Hide unused slots so rejected overlap candidates never appear at the origin.
@@ -56,18 +57,40 @@ export function buildRocks(scene) {
   meshes.forEach((m) => { for (let i = 0; i < m.count; i++) m.setMatrixAt(i, dummy.matrix); });
   const placements = [];
   const used = [];
-  for (let i = 0; i < count; i++) {
-    const zone = i < 330 ? 0 : i < 510 ? 1 : 2;
-    const radius = zone === 0 ? randAround(rng, 24, WORLD.radius - 12) : randAround(rng, 70, WORLD.radius + 42);
+  const slots = [0, 0, 0];
+  const clusters = Array.from({ length: lowPower ? 11 : 18 }, () => {
     const angle = rng() * Math.PI * 2;
-    const x = Math.cos(angle) * radius;
-    const z = Math.sin(angle) * radius;
+    const radius = randAround(rng, 38, WORLD.radius - 8);
+    return {
+      x: Math.cos(angle) * radius,
+      z: Math.sin(angle) * radius,
+      spread: randAround(rng, 6, 17),
+    };
+  });
+  for (let i = 0; i < count; i++) {
+    const zone = i < count * 0.58 ? 0 : i < count * 0.82 ? 1 : 2;
+    let x, z;
+    if (zone === 0) {
+      const cluster = clusters[Math.floor(rng() * clusters.length)];
+      const spread = cluster.spread;
+      x = cluster.x + (rng() + rng() - 1) * spread;
+      z = cluster.z + (rng() + rng() - 1) * spread;
+    } else {
+      const radius = zone === 1
+        ? randAround(rng, 76, WORLD.radius + 12)
+        : randAround(rng, WORLD.radius + 8, WORLD.radius + 46);
+      const angle = rng() * Math.PI * 2;
+      x = Math.cos(angle) * radius;
+      z = Math.sin(angle) * radius;
+    }
     if (!validSite(x, z) || used.some((p) => Math.hypot(x - p.x, z - p.z) < 2.8)) continue;
     used.push({ x, z });
-    const scale = zone === 0 ? randAround(rng, 0.35, 2.8) : randAround(rng, 0.8, 4.8);
+    const scale = zone === 0
+      ? randAround(rng, 0.45, 3.2)
+      : zone === 1 ? randAround(rng, 0.8, 4.6) : randAround(rng, 1.2, 5.2);
     const y = heightAt(x, z);
     const meshIndex = i % 3;
-    const slot = Math.min(meshes[meshIndex].count - 1, placements.filter((p) => p.meshIndex === meshIndex).length);
+    const slot = slots[meshIndex]++;
     if (slot >= meshes[meshIndex].count) continue;
     placeInstance(meshes[meshIndex], slot, x, z, y, scale, rng);
     placements.push({ x, y: y + scale * 0.24, z, r: scale, meshIndex });
@@ -79,7 +102,7 @@ export function buildRocks(scene) {
 /* Small gravel and broken fragments: lots of visual detail at very low poly cost. */
 export function buildSurfaceFragments(scene) {
   const rng = seeded(0x51A7E);
-  const count = window.matchMedia('(max-width: 720px)').matches ? 360 : 900;
+  const count = window.matchMedia('(max-width: 720px)').matches ? 520 : 1400;
   const geom = new IcosahedronGeometry(0.18, 0);
   const mesh = new InstancedMesh(geom, sharedMaterials.gravel, count);
   mesh.castShadow = false; mesh.receiveShadow = true;
@@ -99,9 +122,9 @@ export function buildGeology(scene) {
   const lowPower = window.matchMedia('(max-width: 720px)').matches;
   const group = new Group(); group.name = 'geological-formations';
   const formations = [
-    [new ConeGeometry(1, 1, 6), sharedMaterials.rockOchre, lowPower ? 18 : 34],
-    [new BoxGeometry(1, 1, 1), sharedMaterials.rockGrey, lowPower ? 15 : 28],
-    [new DodecahedronGeometry(1, 0), sharedMaterials.rockDark, lowPower ? 15 : 28],
+    [new ConeGeometry(1, 1, 6), sharedMaterials.rockOchre, lowPower ? 24 : 40],
+    [new BoxGeometry(1, 1, 1), sharedMaterials.rockGrey, lowPower ? 20 : 34],
+    [new DodecahedronGeometry(1, 0), sharedMaterials.rockDark, lowPower ? 20 : 34],
   ];
   for (const [geometry, material, count] of formations) {
     const mesh = new InstancedMesh(geometry, material, count);
@@ -123,7 +146,7 @@ export function buildGeology(scene) {
 
 export function buildCraterDetails(scene) {
   const rng = seeded(0xC4A730);
-  const count = window.matchMedia('(max-width: 720px)').matches ? 44 : 78;
+  const count = window.matchMedia('(max-width: 720px)').matches ? 58 : 100;
   const rimGeom = new RingGeometry(0.72, 1.0, 14); rimGeom.rotateX(-Math.PI / 2);
   const rims = new InstancedMesh(rimGeom, sharedMaterials.rockDark, count);
   rims.castShadow = false; rims.receiveShadow = true;

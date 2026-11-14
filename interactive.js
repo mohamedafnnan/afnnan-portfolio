@@ -42,6 +42,20 @@
    <div class="voice-intro" id="voice-intro" role="dialog" aria-modal="true" aria-labelledby="voice-title"><div class="voice-intro__inner"><p class="eyebrow">VOICE CHANNEL / AF—01</p><h2 id="voice-title">Hello. I'm Afnnan.</h2><p>Welcome to my portfolio. Explore the work, the systems behind it, and the things I enjoy building.</p><div class="voice-intro__actions"><button class="primary" id="voice-listen" type="button">SAY HELLO</button><button id="voice-speak" type="button">PLAY SPOKEN INTRO</button><button id="voice-close" type="button">CLOSE</button></div><p id="voice-status" aria-live="polite"></p></div></div><div class="magnetic-cursor" aria-hidden="true"></div><p id="easter-egg" hidden style="position:fixed;right:18px;bottom:18px;z-index:900;background:#17231f;color:#e7eee4;padding:16px;font:11px monospace">SECRET FOUND · Curiosity is a feature, not a bug.</p>`;
   const contactSection=q('#contact');
   if(contactSection) contactSection.before(host); else signal.after(host);
+  // Netlify Forms only works on a Netlify deployment. Keep GitHub Pages honest.
+  const guestbookForm=q('.guestbook-form',host);
+  if(guestbookForm && location.hostname.endsWith('github.io')){
+   guestbookForm.hidden=true;
+   const description=guestbookForm.previousElementSibling;
+   if(description)description.textContent='This static GitHub Pages version cannot receive submissions. Send a note directly by email instead.';
+   const note=q('.guestbook-note',host);
+   if(note)note.textContent='A public guestbook needs a submission service and moderation before messages can be displayed here.';
+   const emailLink=document.createElement('a');
+   emailLink.className='card-download';
+   emailLink.href='mailto:afnnan.dev@gmail.com?subject=Portfolio%20guestbook%20note';
+   emailLink.textContent='EMAIL A NOTE ↗';
+   guestbookForm.after(emailLink);
+  }
   host.insertAdjacentHTML('beforeend', `
    <section class="creative-grid bookshelf-section" aria-labelledby="bookshelf-title">
     <article class="creative-card creative-card--wide">
@@ -69,13 +83,18 @@
    hello.classList.add('hello-out');
    setTimeout(()=>{if(!opening.classList.contains('opening-exit')){hello.textContent=word;hello.classList.remove('hello-out');}},260);
   };
-  setTimeout(()=>swapGreeting(greetings[1]),1150);
-  setTimeout(()=>swapGreeting(greetings[2]),2300);
-  setTimeout(()=>opening.classList.add('opening-reveal'),3450);
-  setTimeout(()=>opening.classList.add('opening-name-reveal'),4650);
-  setTimeout(()=>opening.classList.add('opening-surname-reveal'),5100);
-  const dismiss=()=>{if(opening.classList.contains('opening-exit'))return;opening.classList.add('opening-exit');setTimeout(()=>opening.remove(),850);};
-  const dismissTimer=setTimeout(dismiss,7600);
+  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reducedMotion){
+   opening.classList.add('opening-reveal','opening-name-reveal','opening-surname-reveal');
+  }else{
+   setTimeout(()=>swapGreeting(greetings[1]),850);
+   setTimeout(()=>swapGreeting(greetings[2]),1700);
+   setTimeout(()=>opening.classList.add('opening-reveal'),2550);
+   setTimeout(()=>opening.classList.add('opening-name-reveal'),3300);
+   setTimeout(()=>opening.classList.add('opening-surname-reveal'),3650);
+  }
+  const dismiss=()=>{if(opening.classList.contains('opening-exit'))return;opening.classList.add('opening-exit');setTimeout(()=>opening.remove(),reducedMotion?180:850);};
+  const dismissTimer=setTimeout(dismiss,reducedMotion?1250:4900);
   q('.opening-skip',opening)?.addEventListener('click',()=>{clearTimeout(dismissTimer);dismiss();});
  }
 
