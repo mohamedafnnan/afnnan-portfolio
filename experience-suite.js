@@ -144,11 +144,6 @@
       }
       requestAnimationFrame(loop);
     };
-    const reset = () => { mode='auto';paused=false;elapsedOffset=0;start=performance.now();track.setAttribute('aria-pressed','false');track.textContent='TRACK POINTER';pause.setAttribute('aria-pressed','false');pause.textContent='PAUSE';stage?.classList.remove('is-tracking'); };
-    run?.addEventListener('click', reset);
-    pause?.addEventListener('click', () => { paused=!paused;pause.setAttribute('aria-pressed',String(paused));pause.textContent=paused?'RESUME':'PAUSE';if(status)status.textContent=paused?'PAUSED · HOLDING POSITION':'AUTO · RESUMING';if(!paused)start=performance.now()-elapsedOffset*1000; });
-    track?.addEventListener('click', () => { mode=mode==='track'?'auto':'track';track.setAttribute('aria-pressed',String(mode==='track'));track.textContent=mode==='track'?'EXIT TRACK':'TRACK POINTER';stage?.classList.toggle('is-tracking',mode==='track');if(mode==='auto')start=performance.now(); });
-    stage?.addEventListener('pointermove', event => { if(mode!=='track')return;const rect=arm.getBoundingClientRect();pointer={x:Math.max(70,Math.min(450,(event.clientX-rect.left)/rect.width*520)),y:Math.max(45,Math.min(235,(event.clientY-rect.top)/rect.height*330))}; });
     arm.addEventListener('click', () => { if(status)status.textContent='ARM / 02 · MAINTENANCE VIEW'; });
     requestAnimationFrame(loop);
   }
