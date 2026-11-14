@@ -40,7 +40,8 @@
    <article class="creative-card creative-card--wide" id="memories"><span class="creative-kicker">CONTINUOUSLY GROWING / 04 — ARCHIVE</span><h3>Floating memories.</h3><p>Add photographs from workshops, competitions, builds and milestones. Your gallery is saved privately in this browser on this device.</p><form class="memory-add-form" id="memory-add-form"><label>PHOTO<input name="photo" type="file" accept="image/*" required></label><label>CAPTION<input name="caption" maxlength="90" placeholder="What happened?" required></label><label>DATE<input name="date" type="date"></label><label>CATEGORY<select name="category"><option>Engineering</option><option>Competition</option><option>Workshop</option><option>People</option><option>Personal</option></select></label><button type="submit">ADD TO MEMORY WALL +</button><p id="memory-status" class="memory-status" aria-live="polite">Images are stored on this device only; they are not uploaded to a server.</p></form><div class="memory-wall" id="memory-wall"><div class="memory-slot"><span><b>YOUR ARCHIVE</b>Add the first photograph above.</span></div></div></article>
    <article class="creative-card creative-card--wide" id="guestbook"><span class="creative-kicker">COMMUNITY / 05 — GUESTBOOK</span><h3>Leave a note.</h3><p>Messages are collected through Netlify Forms when form detection is enabled.</p><form class="guestbook-form" name="portfolio-guestbook" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/?guestbook=thanks"><input type="hidden" name="form-name" value="portfolio-guestbook"><p hidden><label>Leave empty <input name="bot-field"></label></p><label>YOUR NAME<input name="name" autocomplete="name" maxlength="80" required></label><label>WEBSITE / SOCIAL (OPTIONAL)<input name="website" type="url" placeholder="https://" maxlength="200"></label><label class="guestbook-message">YOUR MESSAGE<textarea name="message" maxlength="800" required></textarea></label><button type="submit">SIGN THE GUESTBOOK ↗</button></form><p class="guestbook-note">Please don't include private information. Messages are stored in the Netlify Forms dashboard; public display requires a separate moderation workflow.</p></article></section>
    <div class="voice-intro" id="voice-intro" role="dialog" aria-modal="true" aria-labelledby="voice-title"><div class="voice-intro__inner"><p class="eyebrow">VOICE CHANNEL / AF—01</p><h2 id="voice-title">Hello. I'm Afnnan.</h2><p>Welcome to my portfolio. Explore the work, the systems behind it, and the things I enjoy building.</p><div class="voice-intro__actions"><button class="primary" id="voice-listen" type="button">SAY HELLO</button><button id="voice-speak" type="button">PLAY SPOKEN INTRO</button><button id="voice-close" type="button">CLOSE</button></div><p id="voice-status" aria-live="polite"></p></div></div><div class="magnetic-cursor" aria-hidden="true"></div><p id="easter-egg" hidden style="position:fixed;right:18px;bottom:18px;z-index:900;background:#17231f;color:#e7eee4;padding:16px;font:11px monospace">SECRET FOUND · Curiosity is a feature, not a bug.</p>`;
-  hero.after(host);
+  const contactSection=q('#contact');
+  if(contactSection) contactSection.before(host); else signal.after(host);
   host.insertAdjacentHTML('beforeend', `
    <section class="creative-grid bookshelf-section" aria-labelledby="bookshelf-title">
     <article class="creative-card creative-card--wide">
@@ -56,23 +57,7 @@
      </div>
     </article>
    </section>
-   <section class="creative-grid hello-languages" aria-labelledby="hello-title">
-    <article class="creative-card creative-card--wide">
-     <span class="creative-kicker">INTRODUCTION / 07 — HELLO, WORLD</span><h3 id="hello-title">One greeting. Three languages. One welcome.</h3>
-     <div class="hello-grid"><div><b>HELLO</b><span>English</span></div><div><b>നമസ്കാരം</b><span>Malayalam</span></div><div><b>السلام عليكم</b><span>Arabic greeting</span></div></div>
-     <p class="guestbook-note">Language list is editable in interactive.js; only keep languages you are comfortable speaking.</p>
-    </article>
-   </section>
-   <section class="creative-grid rose-section" aria-label="Name reveal">
-    <article class="creative-card creative-card--wide rose-card">
-     <span class="creative-kicker">A SMALL SIGNATURE / 08</span>
-     <button type="button" class="rose-trigger" id="rose-trigger">REVEAL SIGNATURE ✳</button>
-     <div class="rose-reveal" id="rose-reveal" aria-live="polite">
-      <svg viewBox="0 0 180 180" role="img" aria-label="A red rose blooming"><g class="rose-bloom"><path d="M90 88 C35 65 48 20 82 49 C82 4 132 15 111 57 C155 28 165 79 118 91 C155 119 112 148 91 111 C72 153 27 117 65 91 C25 73 54 42 90 88Z" fill="#a72e36"/><path d="M90 90 C66 72 82 49 98 62 C119 49 127 76 105 91 C121 106 96 123 84 101Z" fill="#d65b61"/><path d="M91 110 C96 137 79 151 82 169 M87 139 C60 128 56 139 50 147 M88 151 C111 131 123 141 129 151" fill="none" stroke="#456b4b" stroke-width="5" stroke-linecap="round"/></g></svg>
-      <h3>Mohamed Afnnan</h3><p>VEETTILAYIL</p>
-     </div>
-    </article>
-   </section>`);
+`);
  }
  // Staged opening: greeting changes first, then rose, then the name signature.
  const opening=q('.opening-intro');
@@ -308,5 +293,5 @@
   canvas.addEventListener('pointerup',()=>{if(!drag)return;ball.vx=tclamp((drag.origin.x-drag.current.x)*.17,-16,16);ball.vy=tclamp((drag.origin.y-drag.current.y)*.17,-18,18);active=true;drag=null;});
   canvas.addEventListener('pointercancel',()=>{drag=null;});
   q('#tt-reset')?.addEventListener('click',reset);
- } q('#rose-trigger')?.addEventListener('click',()=>q('#rose-reveal')?.classList.toggle('is-visible'));
+ }
 })();
