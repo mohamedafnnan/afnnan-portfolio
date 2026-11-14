@@ -78,6 +78,78 @@
         <div class="hero__index" aria-hidden="true"><span>PORTFOLIO / 2026</span><span>SCROLL TO EXPLORE ↓</span></div>
       </section>
 
+      <section class="control-room-section" id="control-room" aria-labelledby="control-room-title">
+        <div class="suite-heading">
+          <div><p class="eyebrow">10 / THE CONTROL ROOM</p><h2 id="control-room-title">A portfolio with<br /><em>systems you can touch.</em></h2></div>
+          <p>Explore a simulated plant interface, follow a small pick-and-place robot, and open the work behind the interface. This is a browser demonstration, not a live industrial controller.</p>
+        </div>
+
+        <div class="control-room" aria-label="Simulated SCADA control room">
+          <header class="control-room__top">
+            <div class="control-room__brand"><span class="control-room__mark">AF</span><span><strong>FIELD / 01</strong><small>PROCESS OVERVIEW</small></span></div>
+            <div class="control-room__live"><i></i><span>SIMULATION ONLINE</span><time id="plant-clock">--:--:--</time></div>
+          </header>
+          <div class="control-room__body">
+            <aside class="control-room__rail" aria-label="Plant areas">
+              <button class="plant-tab is-active" type="button" data-plant="overview" aria-pressed="true"><span>01</span><b>OVERVIEW</b></button>
+              <button class="plant-tab" type="button" data-plant="instrumentation" aria-pressed="false"><span>02</span><b>INSTRUMENTS</b></button>
+              <button class="plant-tab" type="button" data-plant="utilities" aria-pressed="false"><span>03</span><b>UTILITIES</b></button>
+              <button class="plant-tab" type="button" data-plant="security" aria-pressed="false"><span>04</span><b>OT SECURITY</b></button>
+            </aside>
+            <div class="control-room__main">
+              <div class="plant-status-row"><div><span class="plant-eyebrow">DEMO FACILITY / PROCESS LINE A</span><h3 id="plant-panel-title">Process overview</h3></div><span class="plant-state" id="plant-state">RUNNING · SIMULATED</span></div>
+              <div class="plant-diagram">
+                <svg viewBox="0 0 700 210" role="img" aria-label="Simplified process line showing a tank, pump, control valve and output">
+                  <defs><linearGradient id="tankFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b7d6b1" stop-opacity=".3"/><stop offset="1" stop-color="#b7d6b1" stop-opacity=".06"/></linearGradient></defs>
+                  <path class="pipe pipe--main" d="M116 105 H248 M324 105 H430 M494 105 H620"/>
+                  <path class="pipe pipe--branch" d="M178 105 V166 H245 M465 105 V48 H550"/>
+                  <rect class="plant-tank" x="48" y="48" width="68" height="114" rx="7"/><rect class="plant-liquid" x="55" y="105" width="54" height="50" rx="3"/>
+                  <path class="plant-tank-cap" d="M48 65 H116 M48 145 H116"/>
+                  <circle class="plant-pump" cx="286" cy="105" r="38"/><path class="plant-pump-mark" d="M270 88 L304 105 L270 122Z"/>
+                  <path class="plant-valve" d="M430 88 L462 105 L430 122Z M494 88 L462 105 L494 122Z"/>
+                  <rect class="plant-sensor" x="590" y="78" width="60" height="54" rx="4"/><path class="plant-sensor-mark" d="M602 116 L615 96 L626 108 L638 88"/>
+                  <g class="plant-tag"><text x="82" y="34">TK-101</text><text x="286" y="53">P-101</text><text x="462" y="53">CV-101</text><text x="620" y="63">FT-101</text></g>
+                  <g class="plant-flow"><circle cx="160" cy="105" r="4"/><circle cx="365" cy="105" r="4"/><circle cx="540" cy="105" r="4"/></g>
+                </svg>
+                <div class="plant-diagram__legend"><span><i class="legend-dot legend-dot--green"></i>Flow path</span><span><i class="legend-dot legend-dot--amber"></i>Control point</span><span><i class="legend-dot legend-dot--grey"></i>Instrument</span></div>
+              </div>
+              <div class="plant-metrics" aria-live="polite">
+                <article><span>TT-101 · TEMPERATURE</span><strong id="metric-temp">28.4 <small>°C</small></strong><i class="metric-track"><b id="metric-temp-bar" style="width:56%"></b></i></article>
+                <article><span>PT-101 · PRESSURE</span><strong id="metric-pressure">2.4 <small>bar</small></strong><i class="metric-track"><b id="metric-pressure-bar" style="width:48%"></b></i></article>
+                <article><span>FT-101 · FLOW RATE</span><strong id="metric-flow">18.2 <small>L/min</small></strong><i class="metric-track"><b id="metric-flow-bar" style="width:61%"></b></i></article>
+                <article><span>LT-101 · TANK LEVEL</span><strong id="metric-level">72 <small>%</small></strong><i class="metric-track"><b id="metric-level-bar" style="width:72%"></b></i></article>
+              </div>
+              <div class="plant-controls">
+                <div><span class="plant-eyebrow">OPERATOR ACTIONS</span><p id="plant-message" aria-live="polite">All demo values are generated locally in this browser.</p></div>
+                <div class="plant-actions"><button type="button" data-command="pump" aria-pressed="true">PUMP: ON</button><button type="button" data-command="valve" aria-pressed="true">VALVE: OPEN</button><button type="button" data-command="alarm">TEST ALARM</button></div>
+              </div>
+            </div>
+            <aside class="control-room__events"><span class="plant-eyebrow">EVENT LOG</span><div id="plant-events" aria-live="polite"><p><time>00:00:00</time> Simulation initialized</p><p><time>00:00:00</time> Operator station ready</p><p><time>00:00:00</time> No active alarms</p></div><button type="button" id="clear-events">CLEAR LOG</button></aside>
+          </div>
+          <footer class="control-room__foot"><span>TRAINING / DEMONSTRATION ONLY</span><span>PLC · HMI · SCADA · OT</span><span>LOCAL BROWSER SIMULATION</span></footer>
+        </div>
+
+        <div class="robot-workcell">
+          <div class="robot-workcell__copy"><p class="eyebrow">ROBOTICS / PICK &amp; PLACE</p><h3>One arm.<br /><em>One complete cycle.</em></h3><p>Watch the arm locate a payload, grip it, transfer it and release it at the output tray. Switch to pointer tracking to move the target manually.</p><div class="robot-controls"><button type="button" id="arm-run">RUN CYCLE</button><button type="button" id="arm-pause" aria-pressed="false">PAUSE</button><button type="button" id="arm-track" aria-pressed="false">TRACK POINTER</button></div><p class="robot-status" id="arm-status" aria-live="polite">AUTO · READY AT HOME POSITION</p></div>
+          <div class="robot-stage">
+            <svg id="portfolio-arm" viewBox="0 0 520 330" role="img" aria-label="Animated two-link robotic arm moving a payload between trays">
+              <defs><linearGradient id="armBody" x1="0" x2="1"><stop stop-color="#9eb99c"/><stop offset="1" stop-color="#54775e"/></linearGradient></defs>
+              <path d="M20 286 H500" class="robot-floor"/>
+              <rect x="40" y="245" width="118" height="36" rx="4" class="robot-tray"/><text x="99" y="268" class="robot-svg-label">INPUT</text>
+              <rect x="362" y="245" width="118" height="36" rx="4" class="robot-tray robot-tray--out"/><text x="421" y="268" class="robot-svg-label">OUTPUT</text>
+              <g id="robot-base"><rect x="219" y="251" width="82" height="25" rx="5" class="robot-metal"/><circle cx="260" cy="244" r="18" class="robot-joint"/></g>
+              <g id="robot-upper"><path d="M260 244 L260 151" class="robot-link"/><path d="M255 238 L255 157" class="robot-link-highlight"/><circle cx="260" cy="151" r="13" class="robot-joint"/></g>
+              <g id="robot-lower"><path d="M260 151 L260 82" class="robot-link"/><path d="M255 145 L255 87" class="robot-link-highlight"/><circle cx="260" cy="82" r="11" class="robot-joint"/></g>
+              <g id="robot-gripper"><path d="M260 82 V64" class="robot-link"/><path id="robot-jaw-left" d="M260 64 L246 48" class="robot-jaw"/><path id="robot-jaw-right" d="M260 64 L274 48" class="robot-jaw"/></g>
+              <circle id="robot-payload" cx="99" cy="232" r="9" class="robot-payload"/>
+              <circle id="robot-target" cx="260" cy="82" r="27" class="robot-target"/>
+              <g class="robot-svg-label"><text x="260" y="316" text-anchor="middle">2-AXIS PICK / PLACE DEMONSTRATION</text></g>
+            </svg>
+            <span class="robot-stage__readout">ARM / 02 · SIMULATED MOTION</span>
+          </div>
+        </div>
+      </section>
+
       <section class="signal-strip" aria-label="The three connected parts of my work">
         <p class="eyebrow">THREE CONNECTED THREADS</p>
         <div class="signal-strip__items"><span>Understand &amp; build</span><i>·</i><span>Investigate</span><i>·</i><span>Explain &amp; design</span></div>
@@ -261,78 +333,6 @@
         <div class="education-grid">
           <article class="education-card" data-reveal><span class="capability-card__num">2025—2029 · IN PROGRESS</span><h3>B.Tech, Electronics &amp; Instrumentation Engineering</h3><p>Federal Institute of Science and Technology (FISAT), Angamaly.</p><span class="tag">UNDERGRADUATE DEGREE</span></article>
           <article class="education-card education-card--credentials" data-reveal><span class="capability-card__num">PROFILE-LISTED · SUPPORTING FILES ADDED</span><h3>Credentials &amp; structured learning</h3><ul><li>Microsoft Certified: Azure AI Fundamentals</li><li>Mastercard — Cybersecurity Job Simulation</li><li>Google Prompting Essentials</li><li>MATLAB Fundamentals</li><li>Marketing Expert Certified</li></ul><p class="credentials-note">Names are reproduced from the supplied profile. Supplied certificate files are available in the evidence archive; issuer links and current-status checks were not provided.</p><a class="text-link" href="#evidence">Open the evidence archive <span aria-hidden="true">↗</span></a></article>
-        </div>
-      </section>
-
-      <section class="control-room-section" id="control-room" aria-labelledby="control-room-title">
-        <div class="suite-heading">
-          <div><p class="eyebrow">10 / THE CONTROL ROOM</p><h2 id="control-room-title">A portfolio with<br /><em>systems you can touch.</em></h2></div>
-          <p>Explore a simulated plant interface, follow a small pick-and-place robot, and open the work behind the interface. This is a browser demonstration, not a live industrial controller.</p>
-        </div>
-
-        <div class="control-room" aria-label="Simulated SCADA control room">
-          <header class="control-room__top">
-            <div class="control-room__brand"><span class="control-room__mark">AF</span><span><strong>FIELD / 01</strong><small>PROCESS OVERVIEW</small></span></div>
-            <div class="control-room__live"><i></i><span>SIMULATION ONLINE</span><time id="plant-clock">--:--:--</time></div>
-          </header>
-          <div class="control-room__body">
-            <aside class="control-room__rail" aria-label="Plant areas">
-              <button class="plant-tab is-active" type="button" data-plant="overview" aria-pressed="true"><span>01</span><b>OVERVIEW</b></button>
-              <button class="plant-tab" type="button" data-plant="instrumentation" aria-pressed="false"><span>02</span><b>INSTRUMENTS</b></button>
-              <button class="plant-tab" type="button" data-plant="utilities" aria-pressed="false"><span>03</span><b>UTILITIES</b></button>
-              <button class="plant-tab" type="button" data-plant="security" aria-pressed="false"><span>04</span><b>OT SECURITY</b></button>
-            </aside>
-            <div class="control-room__main">
-              <div class="plant-status-row"><div><span class="plant-eyebrow">DEMO FACILITY / PROCESS LINE A</span><h3 id="plant-panel-title">Process overview</h3></div><span class="plant-state" id="plant-state">RUNNING · SIMULATED</span></div>
-              <div class="plant-diagram">
-                <svg viewBox="0 0 700 210" role="img" aria-label="Simplified process line showing a tank, pump, control valve and output">
-                  <defs><linearGradient id="tankFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b7d6b1" stop-opacity=".3"/><stop offset="1" stop-color="#b7d6b1" stop-opacity=".06"/></linearGradient></defs>
-                  <path class="pipe pipe--main" d="M116 105 H248 M324 105 H430 M494 105 H620"/>
-                  <path class="pipe pipe--branch" d="M178 105 V166 H245 M465 105 V48 H550"/>
-                  <rect class="plant-tank" x="48" y="48" width="68" height="114" rx="7"/><rect class="plant-liquid" x="55" y="105" width="54" height="50" rx="3"/>
-                  <path class="plant-tank-cap" d="M48 65 H116 M48 145 H116"/>
-                  <circle class="plant-pump" cx="286" cy="105" r="38"/><path class="plant-pump-mark" d="M270 88 L304 105 L270 122Z"/>
-                  <path class="plant-valve" d="M430 88 L462 105 L430 122Z M494 88 L462 105 L494 122Z"/>
-                  <rect class="plant-sensor" x="590" y="78" width="60" height="54" rx="4"/><path class="plant-sensor-mark" d="M602 116 L615 96 L626 108 L638 88"/>
-                  <g class="plant-tag"><text x="82" y="34">TK-101</text><text x="286" y="53">P-101</text><text x="462" y="53">CV-101</text><text x="620" y="63">FT-101</text></g>
-                  <g class="plant-flow"><circle cx="160" cy="105" r="4"/><circle cx="365" cy="105" r="4"/><circle cx="540" cy="105" r="4"/></g>
-                </svg>
-                <div class="plant-diagram__legend"><span><i class="legend-dot legend-dot--green"></i>Flow path</span><span><i class="legend-dot legend-dot--amber"></i>Control point</span><span><i class="legend-dot legend-dot--grey"></i>Instrument</span></div>
-              </div>
-              <div class="plant-metrics" aria-live="polite">
-                <article><span>TT-101 · TEMPERATURE</span><strong id="metric-temp">28.4 <small>°C</small></strong><i class="metric-track"><b id="metric-temp-bar" style="width:56%"></b></i></article>
-                <article><span>PT-101 · PRESSURE</span><strong id="metric-pressure">2.4 <small>bar</small></strong><i class="metric-track"><b id="metric-pressure-bar" style="width:48%"></b></i></article>
-                <article><span>FT-101 · FLOW RATE</span><strong id="metric-flow">18.2 <small>L/min</small></strong><i class="metric-track"><b id="metric-flow-bar" style="width:61%"></b></i></article>
-                <article><span>LT-101 · TANK LEVEL</span><strong id="metric-level">72 <small>%</small></strong><i class="metric-track"><b id="metric-level-bar" style="width:72%"></b></i></article>
-              </div>
-              <div class="plant-controls">
-                <div><span class="plant-eyebrow">OPERATOR ACTIONS</span><p id="plant-message" aria-live="polite">All demo values are generated locally in this browser.</p></div>
-                <div class="plant-actions"><button type="button" data-command="pump" aria-pressed="true">PUMP: ON</button><button type="button" data-command="valve" aria-pressed="true">VALVE: OPEN</button><button type="button" data-command="alarm">TEST ALARM</button></div>
-              </div>
-            </div>
-            <aside class="control-room__events"><span class="plant-eyebrow">EVENT LOG</span><div id="plant-events" aria-live="polite"><p><time>00:00:00</time> Simulation initialized</p><p><time>00:00:00</time> Operator station ready</p><p><time>00:00:00</time> No active alarms</p></div><button type="button" id="clear-events">CLEAR LOG</button></aside>
-          </div>
-          <footer class="control-room__foot"><span>TRAINING / DEMONSTRATION ONLY</span><span>PLC · HMI · SCADA · OT</span><span>LOCAL BROWSER SIMULATION</span></footer>
-        </div>
-
-        <div class="robot-workcell">
-          <div class="robot-workcell__copy"><p class="eyebrow">ROBOTICS / PICK &amp; PLACE</p><h3>One arm.<br /><em>One complete cycle.</em></h3><p>Watch the arm locate a payload, grip it, transfer it and release it at the output tray. Switch to pointer tracking to move the target manually.</p><div class="robot-controls"><button type="button" id="arm-run">RUN CYCLE</button><button type="button" id="arm-pause" aria-pressed="false">PAUSE</button><button type="button" id="arm-track" aria-pressed="false">TRACK POINTER</button></div><p class="robot-status" id="arm-status" aria-live="polite">AUTO · READY AT HOME POSITION</p></div>
-          <div class="robot-stage">
-            <svg id="portfolio-arm" viewBox="0 0 520 330" role="img" aria-label="Animated two-link robotic arm moving a payload between trays">
-              <defs><linearGradient id="armBody" x1="0" x2="1"><stop stop-color="#9eb99c"/><stop offset="1" stop-color="#54775e"/></linearGradient></defs>
-              <path d="M20 286 H500" class="robot-floor"/>
-              <rect x="40" y="245" width="118" height="36" rx="4" class="robot-tray"/><text x="99" y="268" class="robot-svg-label">INPUT</text>
-              <rect x="362" y="245" width="118" height="36" rx="4" class="robot-tray robot-tray--out"/><text x="421" y="268" class="robot-svg-label">OUTPUT</text>
-              <g id="robot-base"><rect x="219" y="251" width="82" height="25" rx="5" class="robot-metal"/><circle cx="260" cy="244" r="18" class="robot-joint"/></g>
-              <g id="robot-upper"><path d="M260 244 L260 151" class="robot-link"/><path d="M255 238 L255 157" class="robot-link-highlight"/><circle cx="260" cy="151" r="13" class="robot-joint"/></g>
-              <g id="robot-lower"><path d="M260 151 L260 82" class="robot-link"/><path d="M255 145 L255 87" class="robot-link-highlight"/><circle cx="260" cy="82" r="11" class="robot-joint"/></g>
-              <g id="robot-gripper"><path d="M260 82 V64" class="robot-link"/><path id="robot-jaw-left" d="M260 64 L246 48" class="robot-jaw"/><path id="robot-jaw-right" d="M260 64 L274 48" class="robot-jaw"/></g>
-              <circle id="robot-payload" cx="99" cy="232" r="9" class="robot-payload"/>
-              <circle id="robot-target" cx="260" cy="82" r="27" class="robot-target"/>
-              <g class="robot-svg-label"><text x="260" y="316" text-anchor="middle">2-AXIS PICK / PLACE DEMONSTRATION</text></g>
-            </svg>
-            <span class="robot-stage__readout">ARM / 02 · SIMULATED MOTION</span>
-          </div>
         </div>
       </section>
 
