@@ -1,7 +1,7 @@
 (() => {
  const q=(s,r=document)=>r.querySelector(s);
  const hero=q('.hero'), signal=q('.signal-strip');
- if(hero&&signal){
+ if(hero&&signal&&!q('.control-room')){
   const host=document.createElement('div');
   host.innerHTML=`
    <section class="scada-section" id="control-room"><div class="scada-head"><div><p class="eyebrow">INTERACTIVE SYSTEM / 00</p><h2>AFNNAN CONTROL<br>INTERFACE<span style="color:#a9c59f">.</span></h2></div><p>A control-room inspired index for the classic portfolio. Select a circuit node to jump to a section. The central arm is an animated interface element.</p></div>
