@@ -97,7 +97,7 @@
     const interpolate = seconds => {
       let i = 0; while (i < waypoints.length-2 && seconds > waypoints[i+1].t) i++;
       const a = waypoints[i], b = waypoints[i+1], u = ease(Math.max(0, Math.min(1,(seconds-a.t)/(b.t-a.t))));
-      return { shoulder: mix(a.shoulder,b.shoulder,u), elbow: mix(a.elbow,b.elbow,u), grip: seconds >= 1.5 && seconds < 5.0, label: b.label };
+      return { shoulder: mix(a.shoulder,b.shoulder,u), elbow: mix(a.elbow,b.elbow,u), grip: seconds >= 1.5 && seconds < 5.0, delivered: seconds >= 5.0, label: b.label };
     };
     const endpoint = pose => {
       const a = pose.shoulder * Math.PI / 180, b = (pose.shoulder + pose.elbow) * Math.PI / 180;
@@ -111,8 +111,7 @@
       if (payload) {
         const atInput = { x: 99, y: 232 }, atOutput = { x: 421, y: 232 };
         const held = pose.grip;
-        const released = pose.shoulder > 55 && !pose.grip;
-        const position = held ? tip : released ? atOutput : atInput;
+        const position = held ? tip : pose.delivered ? atOutput : atInput;
         payload.setAttribute('cx', position.x);
         payload.setAttribute('cy', position.y + (held ? 12 : 0));
         payload.style.opacity = '1';
